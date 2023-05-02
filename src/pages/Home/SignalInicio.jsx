@@ -1,30 +1,40 @@
+//import de librerias externas
 import styled from "styled-components";
-import { TbHealthRecognition } from "react-icons/tb";
-import { v } from "../../styles/Variables";
 import { useState } from "react";
-import { ButtonP } from "../../components/elements/ButtonP";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+import { TbHealthRecognition } from "react-icons/tb";
+
+//import de componentes internos
+import { ButtonP } from "../../components/elements/ButtonP";
 import { useGetUsersQuery } from "../../services/apiSlice";
-import { ListaUsers } from "./listaUsers";
+import { ListaUsers } from "./internos/listaUsers";
+import { ListaSignals } from "./internos/listaSignals";
+import { RevisionFinal } from "./internos/RevisionFinal";
+//import variables internas
+import { v } from "../../styles/Variables";
 
 export function SignalInicio({ toggleInit }) {
-  //TODO CAMBIAR EL !1 por un 0
-  const [slide, setSlide] = useState(1);
-  const { data: users, error, isLoading } = useGetUsersQuery();
+  //#region  funciones
 
+  //funciones de cambio de estado
+  const [slide, setSlide] = useState(1);
+
+  //funcion para compobar que el elemento este en la basee de datos
+  const { data: users, error, isLoading } = useGetUsersQuery();
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Oh no, there was an error</p>;
-  console.log(users);
 
+  //manejo del corrimiento del slide
   const handleSlide = () => {
     setSlide(slide + 1);
-    console.log(slide);
   };
   const handleSlideBack = () => {
     setSlide(slide - 1);
-    console.log(slide);
   };
 
+  //#endregion
+
+  //retorno del componente
   return (
     <Container>
       <SwitchTransition>
@@ -54,6 +64,7 @@ export function SignalInicio({ toggleInit }) {
                 ></ButtonP>
               </div>
             </div>
+
             <div className={slide === 1 ? "contenedor" : "off"}>
               <ListaUsers
                 slide={slide}
@@ -62,46 +73,19 @@ export function SignalInicio({ toggleInit }) {
                 users={users}
               />
             </div>
-            <div className={slide === 2 ? "contenedor" : "off"}>
-              <div className="contenedor-texto">
-                <h1 className="primero">Elige las señales y sus tiempos ⏱</h1>
-              </div>
-              <div className="buttons">
-                <ButtonP
-                  text="Atras"
-                  color="secondary"
-                  handle={handleSlideBack}
-                ></ButtonP>
-                <ButtonP
-                  text="Siguiente"
-                  color="primary"
-                  handle={handleSlide}
-                ></ButtonP>
-              </div>
 
-            
+            <div className={slide === 2 ? "contenedor" : "off"}>
+             <ListaSignals
+              handleSlideBack={handleSlideBack}
+              handleSlide={handleSlide}
+             />
             </div>
+
             <div className={slide === 3 ? "contenedor" : "off"}>
-              <div className="contenedor-texto">
-                <h1 className="primero">
-                  Revisa la informacion antes de iniciar
-                </h1>
-                <p>Asegurate que sea el correcto no podras retroceder.</p>
-                <div className="buttons">
-                  <ButtonP
-                    text="Atras"
-                    color="secondary"
-                    handle={handleSlideBack}
-                  ></ButtonP>
-                  <ButtonP
-                    text="Siguiente"
-                    color="primary"
-                    handle={toggleInit}
-                  ></ButtonP>
-                </div>
-                <div className="preInicio"></div>
-              </div>
-              <div></div>
+              <RevisionFinal
+                handleSlideBack={handleSlideBack}
+                toggleInit={toggleInit}
+              />
             </div>
           </div>
         </CSSTransition>
@@ -117,7 +101,6 @@ const Container = styled.div`
     position: absolute;
     top: 0;
     z-index: 5;
-   
 
     .off {
       display: none;

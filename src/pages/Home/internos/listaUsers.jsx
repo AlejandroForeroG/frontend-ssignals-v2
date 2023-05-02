@@ -1,26 +1,35 @@
 //componente el cual se encarga de setear el usuario al cual se le van a tomar las medidas
-
 //imports
 import styled from "styled-components";
-import { ButtonP } from "../../components/elements/ButtonP";
-import { v } from "../../styles/Variables";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { editUser, editUserActive } from "../../../features/user";
+
+import { ButtonP } from "../../../components/elements/ButtonP";
+import { v } from "../../../styles/Variables";
+
 //funcion princiapal
-export function ListaUsers({ handleSlide, handleSlideBack, users, slide }) {
+export function ListaUsers({ handleSlide, handleSlideBack, users }) {
   //manejador de error si el id no llega  a estar en la base de datos
+  //hooks
   const [error, setError] = useState(false);
+  const dispatch = useDispatch();
+
+
+  //funciones
   const handleSubmit = (e) => {
     e.preventDefault();
     const id = e.target.paciente.value.trim();
-
     const selectedPatient = users.find(
       (patient) => patient.id === parseInt(id)
     );
+
     if (selectedPatient) {
       // Paciente encontrado, realizar acción
-      handleSlide();
+      console.log(selectedPatient);
       setError(false);
-      console.log(id);
+      dispatch(editUser(selectedPatient));
+      dispatch(editUserActive());
       handleSlide();
     } else {
       // Paciente no encontrado, mostrar mensaje de error
@@ -31,45 +40,43 @@ export function ListaUsers({ handleSlide, handleSlideBack, users, slide }) {
   //return del componente
   return (
     <Container>
-        <div className="contenedor-texto">
-          <h1 className="primero">
-            A continuacion elige el paciente por su ID 🩺{" "}
-          </h1>
+      <div className="contenedor-texto">
+        <h1 className="primero">
+          Elige el paciente por su ID 🩺{" "}
+        </h1>
+      </div>
+
+      <div className="contenedor-lista">
+        <form id="myForm" onSubmit={handleSubmit}>
+          <input
+            name="paciente"
+            type="search"
+            list="nombres"
+            className="lista"
+            required
+          />
+          <datalist id="nombres">
+            {users.map((user) => (
+              <option value={`${user.id}`} key={user.id} />
+            ))}
+          </datalist>
+        </form>
+        {error && <p>Uy, no se encontro el paciente 😕, ingresa denuevo</p>}
+
+        <div className="buttons">
+          <ButtonP
+            text="Atras"
+            color="secondary"
+            handle={handleSlideBack}
+          ></ButtonP>
+          <ButtonP
+            text="Siguiente"
+            color="primary"
+            type="submit"
+            form="myForm"
+          ></ButtonP>
         </div>
-
-        <div className="contenedor-lista">
-          <form id="myForm" onSubmit={handleSubmit}>
-            <input
-              name="paciente"
-              type="search"
-              list="nombres"
-              className="lista"
-              required
-            />
-            <datalist id="nombres">
-              {users.map((user) => (
-                <option value={`${user.id}`} key={user.id} />
-              ))}
-            </datalist>
-          </form>
-          {error && <p>Uy, no se encontro el paciente 😕, ingresa denuevo</p>}
-
-          <div className="buttons">
-            <ButtonP
-              text="Atras"
-              color="secondary"
-              handle={handleSlideBack}
-            ></ButtonP>
-            <ButtonP
-              text="Siguiente"
-              color="primary"
-              type="submit"
-              form="myForm"
-            ></ButtonP>
-          </div>
-
-        </div>
-      
+      </div>
     </Container>
   );
 }

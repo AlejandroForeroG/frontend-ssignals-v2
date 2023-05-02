@@ -1,30 +1,35 @@
 import io from "socket.io-client";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
+import { useState} from "react";
+import { useSelector } from "react-redux";
 import { SignalInicio } from "./SignalInicio";
 import { TomaSignals } from "./TomaSignals";
 
-const socket = io("http://192.168.10.12:3100");
+//TODO: trabajas con sockets
 
+// const socket = io("http://192.168.10.12:3100");
+
+//funciones de cambio de estado
 export function Home() {
   const [isInit, setIsInit] = useState(true);
-
   const toggleInit = () => {
     setIsInit(!isInit);
   };
 
+
+//retorno del componente
   return (
     <Container>
-        <div className={!isInit ? `off` : `contenedor`}>
-          <div className="contenedor-bg">
+      {/* cmponente de bienvenida inicial */}
+      <div className={!isInit ? `off` : `contenedor`}>
+        <div className="contenedor-bg">
           <SignalInicio setIsInit={setIsInit} toggleInit={toggleInit} />
-          </div>
         </div>
-      {/* {!isInit && <TomaSignals isInit={isInit} />} */}
+      </div>
+      {/* componente de señales */}
       <div className={isInit ? `off` : `contenedor`}>
         <TomaSignals isInit={isInit} />
       </div>
-      
     </Container>
   );
 }

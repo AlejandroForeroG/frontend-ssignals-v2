@@ -3,7 +3,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { editUser, editUserActive } from "../../../features/user";
+import { editUser } from "../../../store/slices/user";
 
 import { ButtonP } from "../../../components/elements/ButtonP";
 import { v } from "../../../styles/Variables";
@@ -15,7 +15,6 @@ export function ListaUsers({ handleSlide, handleSlideBack, users }) {
   const [error, setError] = useState(false);
   const dispatch = useDispatch();
 
-
   //funciones
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -26,10 +25,8 @@ export function ListaUsers({ handleSlide, handleSlideBack, users }) {
 
     if (selectedPatient) {
       // Paciente encontrado, realizar acción
-      console.log(selectedPatient);
       setError(false);
       dispatch(editUser(selectedPatient));
-      dispatch(editUserActive());
       handleSlide();
     } else {
       // Paciente no encontrado, mostrar mensaje de error
@@ -41,9 +38,7 @@ export function ListaUsers({ handleSlide, handleSlideBack, users }) {
   return (
     <Container>
       <div className="contenedor-texto">
-        <h1 className="primero">
-          Elige el paciente por su ID 🩺{" "}
-        </h1>
+        <h1 className="primero">Elige el paciente por su ID 🩺 </h1>
       </div>
 
       <div className="contenedor-lista">

@@ -5,23 +5,36 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { TbHealthRecognition } from "react-icons/tb";
 
 //import de componentes internos
-import { ButtonP } from "../../components/elements/ButtonP";
-import { useGetUsersQuery } from "../../services/apiSlice";
-import { ListaUsers } from "./internos/listaUsers";
-import { ListaSignals } from "./internos/listaSignals";
-import { RevisionFinal } from "./internos/RevisionFinal";
+import { ButtonP } from "../../../components/elements/ButtonP";
+import { useGetUsersQuery } from "../../../store/services/userApi";
+import { ListaUsers } from "./listaUsers";
+import { ListaSignals } from "./listaSignals";
+import { RevisionFinal } from "./RevisionFinal";
 //import variables internas
-import { v } from "../../styles/Variables";
+import { v } from "../../../styles/Variables";
 
 export function SignalInicio({ toggleInit }) {
   //#region  funciones
 
   //funciones de cambio de estado
-  const [slide, setSlide] = useState(1);
+  const [slide, setSlide] = useState(0);
 
   //funcion para compobar que el elemento este en la basee de datos
   const { data: users, error, isLoading } = useGetUsersQuery();
-  if (isLoading) return <p>Loading...</p>;
+
+  if (isLoading)
+    return (
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <h1>Cargando..</h1>
+      </div>
+    );
   if (error) return <p>Oh no, there was an error</p>;
 
   //manejo del corrimiento del slide
@@ -75,10 +88,10 @@ export function SignalInicio({ toggleInit }) {
             </div>
 
             <div className={slide === 2 ? "contenedor" : "off"}>
-             <ListaSignals
-              handleSlideBack={handleSlideBack}
-              handleSlide={handleSlide}
-             />
+              <ListaSignals
+                handleSlideBack={handleSlideBack}
+                handleSlide={handleSlide}
+              />
             </div>
 
             <div className={slide === 3 ? "contenedor" : "off"}>

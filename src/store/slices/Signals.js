@@ -11,8 +11,8 @@ const arrayThousands = Array.from(Array(1000), (_, i) => (i + 1).toString());
 const initialState = [
   {
     id: 1,
-    nombre: "Temperatura",
-    data: "Temperature",
+    name: "Temperatura",
+    data: "temperature",
     unit: "°C",
     labels: arrayTen,
     values: [],
@@ -21,7 +21,7 @@ const initialState = [
   },
   {
     id: 2,
-    nombre: "Beats Por Minuto",
+    name: "Beats Por Minuto",
     data: "bpm",
     unit: "bpm",
     labels: arrayTen,
@@ -31,7 +31,7 @@ const initialState = [
   },
   {
     id: 3,
-    nombre: "Saturación De Oxígeno",
+    name: "Saturación De Oxígeno",
     data: "oxigenSaturation",
     unit: "%",
     labels: arrayTen,
@@ -41,7 +41,7 @@ const initialState = [
   },
   {
     id: 4,
-    nombre: "GSR",
+    name: "GSR",
     data: "grsVoltage",
     unit: "V",
     labels: arrayThousands,
@@ -51,7 +51,7 @@ const initialState = [
   },
   {
     id: 5,
-    nombre: "Flujo De Aire",
+    name: "Flujo De Aire",
     data: "airflux",
     unit: "m3/h",
     labels: arrayThousands,
@@ -61,11 +61,11 @@ const initialState = [
   },
   {
     id: 6,
-    nombre: "ECG",
+    name: "ECG",
     unit: "mV",
     labels: arrayThousands,
     values: [],
-    samplingTime: "1",
+    samplingTime: "0.001",
     color: "rgba(51, 214, 146, 1)",
   },
 ];
@@ -75,7 +75,21 @@ const initialState = [
 export const signalsSlice = createSlice({
   name: "signals",
   initialState,
-  reducers: {},
+  reducers: {
+    setInitSignals: (state, action) => {
+      state=initialState;
+      console.log(state)
+    },
+    setTime: (state, action) => {
+      action.payload.forEach((signal) => {
+        state.forEach((signalState) => {
+          if (signalState.id === signal.id) {
+            signalState.samplingTime = signal.samplingTime;
+          }
+        });
+      });
+    }
+  },
 });
-
+export const { setTime,setInitSignals } = signalsSlice.actions;
 export default signalsSlice.reducer;

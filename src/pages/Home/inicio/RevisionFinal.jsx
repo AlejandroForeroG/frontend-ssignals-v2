@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
-
 import { ButtonP } from "../../../components/elements/ButtonP";
 
 export function RevisionFinal({ Signals, handleSlideBack, toggleInit }) {
   const actualUser = useSelector((state) => state.user);
-  const signals = useSelector((state) => state.signals);
+  const signals = useSelector((state) => state.signals.slice(0, 5));
 
   return (
     <Container>
@@ -20,7 +19,7 @@ export function RevisionFinal({ Signals, handleSlideBack, toggleInit }) {
             <div className="contenedor-imagen-final">
               <img src={`${actualUser.pp}`} alt="" />
             </div>
-
+            <div className="info"></div>
             <p className="usuario">{`${actualUser.name}`}</p>
             <p>{`id: ${actualUser.id}`}</p>
             <p>{`Edad: ${actualUser.age} años`}</p>
@@ -29,14 +28,20 @@ export function RevisionFinal({ Signals, handleSlideBack, toggleInit }) {
           </div>
           <div className="contenedorSignals">
             <h2>Tiempos</h2>
-
-            <ul>
+            <div className="tiempos">
+              <ul className="nombre">
+                {signals.map((signal) => (
+                  <li key={signal.id} className={signal.name}>
+                    {signal.name}
+                  </li>
+                ))}
+              </ul>
+            <div className="valores-tiempos">
               {signals.map((signal) => (
-                <li key={signal.id} className={signal.nombre}>
-                  {signal.nombre} : {signal.samplingTime} S
-                </li>
+                <p>{signal.samplingTime} s</p>
               ))}
-            </ul>
+            </div>
+            </div>
           </div>
         </div>
         <div className="parrafoAbajo">
@@ -102,6 +107,9 @@ const Container = styled.div`
       h2 {
         margin-bottom: 20px;
       }
+      .tiempos{
+        display: flex;
+      }
       ul {
         display: flex;
         flex-direction: column;
@@ -109,6 +117,7 @@ const Container = styled.div`
         align-items: stretch;
         list-style: none;
         margin-bottom: 70px;
+        margin-right: 20px;
         li:before {
           content: "📌";
           margin-right: 10px;
@@ -119,7 +128,7 @@ const Container = styled.div`
   .parrafoAbajo {
     margin-bottom: 20px;
   }
-  #buttons{
-    margin-bottom:20px
+  #buttons {
+    margin-bottom: 20px;
   }
-  `;
+`;

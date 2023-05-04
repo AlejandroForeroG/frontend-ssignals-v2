@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 //TODO: actualizar para que venga desde la base de datos
 const initialState = {
@@ -18,7 +18,8 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     editUser: (state, action) => {
-      const { id, name, weight, height, age,pp } = action.payload;
+      console.log(action.payload)
+      const { id, name, weight, height, age,pp,isActive } = action.payload;
 
       state.id = id;
       state.name = name;
@@ -26,12 +27,10 @@ export const userSlice = createSlice({
       state.weight =weight ;
       state.height = height;
       state.pp= pp;
-      console.log(state.id);
-    },
-    editUserActive: (state, action) => {
-      state.isActive = !state.isActive;
-    },
+      state.isActive = isActive;
+     
+    }
   },
 });
-export const { editUser, editUserActive } = userSlice.actions;
+export const { editUser} = userSlice.actions;
 export default userSlice.reducer;

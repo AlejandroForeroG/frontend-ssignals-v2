@@ -1,34 +1,72 @@
+//importaciones 📁
+//modulos
 import io from "socket.io-client";
 import styled from "styled-components";
-import { useState} from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
-import { SignalInicio } from "./SignalInicio";
+import { useDispatch } from "react-redux";
+//componentes
+import {  editUser } from "../../store/slices/user";
+import { setInitSignals } from "../../store/slices/Signals";
+import { SignalInicio } from "./inicio/SignalInicio";
 import { TomaSignals } from "./TomaSignals";
+//metodos de api
 
+import { useEditUserMutation } from "../../store/services/userApi";
 //TODO: trabajas con sockets
 
 // const socket = io("http://192.168.10.12:3100");
 
-//funciones de cambio de estado
+//funcion principal 📑
 export function Home() {
+  //estado local
+  const dispatch = useDispatch();
   const [isInit, setIsInit] = useState(true);
-  const toggleInit = () => {
+
+  const actualUser = useSelector((state) => state.user);
+
+  const [editUserDB, { error, isLoading }] = useEditUserMutation();
+
+  if (isLoading)
+    return (
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <h1>Cargando..</h1>
+      </div>
+    );
+  if (error) return <p>Oh no, there was an error</p>;
+
+  const toggleInit = async () => {
     setIsInit(!isInit);
+
+    const estado = isInit;
+
+    dispatch(editUser({ ...actualUser, isActive: estado }));
+
+    await dispatch(setInitSignals(!isInit));
+    await editUserDB({ ...actualUser, isActive: estado });
   };
 
-
-//retorno del componente
+  //retorno del componente
   return (
     <Container>
-      {/* cmponente de bienvenida inicial */}
-      <div className={!isInit ? `off` : `contenedor`}>
-        <div className="contenedor-bg">
-          <SignalInicio setIsInit={setIsInit} toggleInit={toggleInit} />
-        </div>
+      <div>
+        {isInit ? (
+          <div className="contenedor-bg">
+            <SignalInicio setIsInit={setIsInit} toggleInit={toggleInit} />
+          </div>
+        ) : null}
       </div>
+
       {/* componente de señales */}
-      <div className={isInit ? `off` : `contenedor`}>
-        <TomaSignals isInit={isInit} />
+      <div className={!isInit ? `contenedor` : `off`}>
+        <TomaSignals isInit={isInit} toggleInit={toggleInit} />
       </div>
     </Container>
   );

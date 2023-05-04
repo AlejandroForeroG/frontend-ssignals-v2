@@ -42,9 +42,15 @@ const Container = styled.div`
   }
   .primary {
     background-color: #405cf5;
+    :active {
+      background-color: #3a4ec1;
+    }
   }
   .secondary {
     background-color: #33d692;
+    :active {
+      background-color: #40ac7f;
+    }
   }
 
   .button-9:disabled {

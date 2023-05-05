@@ -2,17 +2,18 @@
 //modulos
 import io from "socket.io-client";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 //componentes
-import {  editUser } from "../../store/slices/user";
+import { editUser } from "../../store/slices/user";
 import { setInitSignals } from "../../store/slices/Signals";
 import { SignalInicio } from "./inicio/SignalInicio";
 import { TomaSignals } from "./TomaSignals";
 //metodos de api
-
+import { getUser } from "../../store/slices/user";
 import { useEditUserMutation } from "../../store/services/userApi";
+
 //TODO: trabajas con sockets
 
 // const socket = io("http://192.168.10.12:3100");
@@ -21,11 +22,14 @@ import { useEditUserMutation } from "../../store/services/userApi";
 export function Home() {
   //estado local
   const dispatch = useDispatch();
-  const [isInit, setIsInit] = useState(true);
-
+  
   const actualUser = useSelector((state) => state.user);
-
+  
   const [editUserDB, { error, isLoading }] = useEditUserMutation();
+  useEffect(() => {
+    dispatch(getUser());
+  }, [dispatch]);
+  const [isInit, setIsInit] = useState(actualUser.isActive);
 
   if (isLoading)
     return (
@@ -44,11 +48,8 @@ export function Home() {
 
   const toggleInit = async () => {
     setIsInit(!isInit);
-
     const estado = isInit;
-
     dispatch(editUser({ ...actualUser, isActive: estado }));
-
     await dispatch(setInitSignals(!isInit));
     await editUserDB({ ...actualUser, isActive: estado });
   };
@@ -63,11 +64,17 @@ export function Home() {
           </div>
         ) : null}
       </div>
-
-      {/* componente de señales */}
-      <div className={!isInit ? `contenedor` : `off`}>
-        <TomaSignals isInit={isInit} toggleInit={toggleInit} />
+      <div>
+        {!isInit ? (
+          <div className="contenedor">
+            <TomaSignals isInit={isInit} toggleInit={toggleInit} />
+          </div>
+        ) : null}
       </div>
+      {/* componente de señales */}
+      {/* <div className={!isInit ? `contenedor` : `off`}>
+        <TomaSignals isInit={isInit} toggleInit={toggleInit} />
+      </div> */}
     </Container>
   );
 }

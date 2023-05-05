@@ -14,7 +14,7 @@ export const userApi = createApi({
         url: `/users/update/${user.id}`,
         method: "PUT",
         body: user
-      }),
+      })
     }),
   }),
 });

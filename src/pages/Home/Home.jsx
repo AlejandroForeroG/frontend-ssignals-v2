@@ -81,7 +81,7 @@ export function Home() {
 
 //#beginregion estilos
 const Container = styled.div`
-  height: 98vh;
+  height: 100%;
   .contenedor-bg {
     width: 95vw;
     height: 100vh;

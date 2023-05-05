@@ -18,6 +18,7 @@ const initialState = [
     values: [],
     samplingTime: "1",
     color: "rgba(51, 214, 146, 1)",
+    isShort: "short",
   },
   {
     id: 2,
@@ -28,6 +29,7 @@ const initialState = [
     values: [],
     samplingTime: "1",
     color: "rgba(51, 214, 146, 1)",
+    isShort: true,
   },
   {
     id: 3,
@@ -38,16 +40,18 @@ const initialState = [
     values: [],
     samplingTime: "1",
     color: "rgba(51, 214, 146, 1)",
+    isShort: true,
   },
   {
     id: 4,
     name: "GSR",
     data: "grsVoltage",
     unit: "V",
-    labels: arrayThousands,
+    labels: arrayHundred,
     values: [],
     samplingTime: "1",
     color: "rgba(51, 214, 146, 1)",
+    isShort: false,
   },
   {
     id: 5,
@@ -58,6 +62,7 @@ const initialState = [
     values: [],
     samplingTime: "1",
     color: "rgba(51, 214, 146, 1)",
+    isShort: false,
   },
   {
     id: 6,
@@ -67,6 +72,7 @@ const initialState = [
     values: [],
     samplingTime: "0.001",
     color: "rgba(51, 214, 146, 1)",
+    isShort: false,
   },
 ];
 

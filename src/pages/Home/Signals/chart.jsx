@@ -5,6 +5,15 @@ import styled from "styled-components";
 export function Charts() {
   const signals = useSelector((state) => state.signals);
   console.log(signals);
+
+
+   function onButtonClick(chart){
+            chart.data.datasets.forEach((dataset) => {
+              dataset.data.push(1);
+            });
+            chart.update();
+          }
+        
   return (
     <Container>
       <div className="signalsContainer">
@@ -14,7 +23,7 @@ export function Charts() {
               <p>{signal.name}</p>
               <p>Tm:[ {signal.samplingTime} S]</p>
             </div>
-            <div className="canvasContainer">{Canvas()}
+            <div className="canvasContainer">{Canvas(signal,onButtonClick)}
             </div>
           </div>
         ))}

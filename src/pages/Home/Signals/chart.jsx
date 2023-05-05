@@ -1,11 +1,5 @@
 import { useSelector } from "react-redux";
-import Chart from "chart.js/auto";
-import { DateTime } from "luxon";
-import "chartjs-adapter-luxon";
-import "chartjs-plugin-streaming";
-Chart.defaults.set("plugins.streaming", {
-  duration: 20000,
-});
+import { Canvas} from "./signalsChart";
 
 import styled from "styled-components";
 export function Charts() {
@@ -20,12 +14,8 @@ export function Charts() {
               <p>{signal.name}</p>
               <p>Tm:[ {signal.samplingTime} S]</p>
             </div>
-            <canvas
-              className="canvasContainer"
-              id={`myChart${index}`}
-              width="500"
-              height="315"
-            ></canvas>
+            <div className="canvasContainer">{Canvas()}
+            </div>
           </div>
         ))}
       </div>
@@ -68,6 +58,8 @@ const Container = styled.div`
       }
       .canvasContainer {
         margin: 10px;
+        width:500px;
+        height:315px;
       }
     }
   }

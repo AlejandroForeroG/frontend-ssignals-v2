@@ -5,7 +5,7 @@ import { BiPowerOff } from "react-icons/bi";
 import { getUser } from "../../store/thunks";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Charts } from "./Signals/chart";
+import { Charts } from "../../components/Signals/chart";
 
 export function TomaSignals({ isInit, toggleInit }) {
   const actualUser = useSelector((state) => state.user);

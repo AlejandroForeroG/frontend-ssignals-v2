@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 //componentes
 import { editUser } from "../../store/slices/user";
 import { setInitSignals } from "../../store/slices/Signals";
-import { SignalInicio } from "./inicio/SignalInicio";
+import { Slides } from "./Slides/Slides";
 import { TomaSignals } from "./TomaSignals";
 //metodos de api
 import { getUser } from "../../store/slices/user";
@@ -60,7 +60,7 @@ export function Home() {
       <div>
         {isInit ? (
           <div className="contenedor-bg">
-            <SignalInicio setIsInit={setIsInit} toggleInit={toggleInit} />
+            <Slides setIsInit={setIsInit} toggleInit={toggleInit} />
           </div>
         ) : null}
       </div>
@@ -71,10 +71,6 @@ export function Home() {
           </div>
         ) : null}
       </div>
-      {/* componente de señales */}
-      {/* <div className={!isInit ? `contenedor` : `off`}>
-        <TomaSignals isInit={isInit} toggleInit={toggleInit} />
-      </div> */}
     </Container>
   );
 }

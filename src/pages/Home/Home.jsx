@@ -14,7 +14,7 @@ import { useGetUserData } from "../../hooks/useGetUser";
 //metodos de api
 
 import { useEditUserMutation } from "../../store/services/userApi";
-
+import ReactLoading from "react-loading";
 //TODO: trabajas con sockets
 
 // const socket = io("http://192.168.10.12:3100");
@@ -28,8 +28,7 @@ export function Home() {
   const [editUserDB, { error, isLoading }] = useEditUserMutation();
   const actualUser = useSelector((state) => state.user);
   const { data: user, isLoadingDB, isSuccess } = useGetUserData();
-  const [isSampling, setIsSampling] = useState();
- 
+  const [isSampling, setIsSampling] = useState(); 
   
 
   if (isLoadingDB || isLoading || !user || !actualUser)
@@ -42,7 +41,12 @@ export function Home() {
           transform: "translate(-50%, -50%)",
         }}
       >
-        <h1>Cargando..</h1>
+        <ReactLoading
+          type={"spin"}
+          color={"#405cf5"}
+          height={200}
+          width={100}
+        />
       </div>
     );
     
@@ -72,6 +76,7 @@ export function Home() {
         <div>
           {actualUser.isactive ? (
             <div className="contenedor">
+             
               <TomaSignals toggleInit={toggleInit} />
             </div>
           ) : null}

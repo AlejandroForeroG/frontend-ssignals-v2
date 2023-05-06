@@ -11,12 +11,17 @@ import { setInitSignals } from "../../store/slices/Signals";
 import { Slides } from "./Slides/Slides";
 import { TomaSignals } from "./TomaSignals";
 //metodos de api
-import { getUser } from "../../store/slices/user";
+
 import { useEditUserMutation } from "../../store/services/userApi";
 
 //TODO: trabajas con sockets
 
 // const socket = io("http://192.168.10.12:3100");
+
+
+
+
+
 
 //funcion principal 📑
 export function Home() {
@@ -25,26 +30,26 @@ export function Home() {
   
   const actualUser = useSelector((state) => state.user);
   
-  const [editUserDB, { error, isLoading }] = useEditUserMutation();
-  useEffect(() => {
-    dispatch(getUser());
-  }, [dispatch]);
+  // const [editUserDB, { error, isLoading }] = useEditUserMutation();
+  // // useEffect(() => {
+  // //   dispatch(getUser());
+  // // }, [dispatch]);
   const [isInit, setIsInit] = useState(actualUser.isActive);
 
-  if (isLoading)
-    return (
-      <div
-        style={{
-          position: "absolute",
-          top: "50%",
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        <h1>Cargando..</h1>
-      </div>
-    );
-  if (error) return <p>Oh no, there was an error</p>;
+  // if (isLoading)
+  //   return (
+  //     <div
+  //       style={{
+  //         position: "absolute",
+  //         top: "50%",
+  //         left: "50%",
+  //         transform: "translate(-50%, -50%)",
+  //       }}
+  //     >
+  //       <h1>Cargando..</h1>
+  //     </div>
+  //   );
+  // if (error) return <p>Oh no, there was an error</p>;
 
   const toggleInit = async () => {
     setIsInit(!isInit);

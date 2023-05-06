@@ -3,10 +3,12 @@ import { MyRoutes } from "./routers/routes";
 import { Sidebar } from "./components/Sidebar";
 import { useState } from "react";
 import styled from "styled-components";
-
+import { useGetUserData } from "./hooks/useGetUser";
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { data: user, isLoading } = useGetUserData();
 
+  if (isLoading) return <h1>Cargando...</h1>;
   return (
     <>
       <BrowserRouter>

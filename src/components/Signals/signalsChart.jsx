@@ -35,7 +35,7 @@ export function Canvas(signal,onButtonClick) {
   useEffect(() => {
     const chart = chartRef.current;
     if (chart) {
-      console.log(chart);
+
     }
   });
 

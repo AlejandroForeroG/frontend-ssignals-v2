@@ -4,7 +4,7 @@ import { Canvas} from "./signalsChart";
 import styled from "styled-components";
 export function Charts() {
   const signals = useSelector((state) => state.signals);
-  console.log(signals);
+
 
 
    function onButtonClick(chart){

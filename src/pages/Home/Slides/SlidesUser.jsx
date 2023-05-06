@@ -23,12 +23,10 @@ export function SlidesUsers({ handleSlide, handleSlideBack, users }) {
     );
 
     if (selectedPatient) {
-      // Paciente encontrado, realizar acción
       setError(false);
       dispatch(editUser(selectedPatient));
       handleSlide();
     } else {
-      // Paciente no encontrado, mostrar mensaje de error
       setError(true);
     }
   };

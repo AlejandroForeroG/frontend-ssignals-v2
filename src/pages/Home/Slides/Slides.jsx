@@ -3,15 +3,12 @@ import styled from "styled-components";
 import { useState } from "react";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { TbHealthRecognition } from "react-icons/tb";
-
 //import de componentes internos
 import { SlidesUsers } from "./SlidesUser";
 import { SlidesSignals } from "./SlidesSignals";
 import { SlidesFinal } from "./SlidesFinal";
-
 import { ButtonP } from "../../../components/elements/ButtonP";
 import { useGetUsersQuery } from "../../../store/services/userApi";
-
 import { v } from "../../../styles/Variables";
 
 //funcion principal

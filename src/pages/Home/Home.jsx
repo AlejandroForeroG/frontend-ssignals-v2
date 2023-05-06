@@ -10,6 +10,7 @@ import { editUser } from "../../store/slices/user";
 import { setInitSignals } from "../../store/slices/Signals";
 import { Slides } from "./Slides/Slides";
 import { TomaSignals } from "./TomaSignals";
+import { useGetUserData } from "../../hooks/useGetUser";
 //metodos de api
 
 import { useEditUserMutation } from "../../store/services/userApi";
@@ -18,66 +19,65 @@ import { useEditUserMutation } from "../../store/services/userApi";
 
 // const socket = io("http://192.168.10.12:3100");
 
-
-
-
-
-
 //funcion principal 📑
 export function Home() {
   //estado local
   const dispatch = useDispatch();
-  
-  const actualUser = useSelector((state) => state.user);
-  
-  // const [editUserDB, { error, isLoading }] = useEditUserMutation();
-  // // useEffect(() => {
-  // //   dispatch(getUser());
-  // // }, [dispatch]);
-  const [isInit, setIsInit] = useState(actualUser.isActive);
 
-  // if (isLoading)
-  //   return (
-  //     <div
-  //       style={{
-  //         position: "absolute",
-  //         top: "50%",
-  //         left: "50%",
-  //         transform: "translate(-50%, -50%)",
-  //       }}
-  //     >
-  //       <h1>Cargando..</h1>
-  //     </div>
-  //   );
-  // if (error) return <p>Oh no, there was an error</p>;
+  
+  const [editUserDB, { error, isLoading }] = useEditUserMutation();
+  const actualUser = useSelector((state) => state.user);
+  const { data: user, isLoadingDB, isSuccess } = useGetUserData();
+  const [isSampling, setIsSampling] = useState();
+ 
+  
+
+  if (isLoadingDB || isLoading || !user || !actualUser)
+    return (
+      <div
+        style={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <h1>Cargando..</h1>
+      </div>
+    );
+    
+    if (error) return <p>Oh no, there was an error</p>;
+     
 
   const toggleInit = async () => {
-    setIsInit(!isInit);
-    const estado = isInit;
-    dispatch(editUser({ ...actualUser, isActive: estado }));
-    await dispatch(setInitSignals(!isInit));
-    await editUserDB({ ...actualUser, isActive: estado });
+    
+    const estado = actualUser.isactive ? false : true;
+    dispatch(editUser({ ...actualUser, isactive: estado }));
+    await dispatch(setInitSignals(estado));
+    await editUserDB({ ...actualUser, isactive: estado });
   };
 
   //retorno del componente
-  return (
-    <Container>
-      <div>
-        {isInit ? (
-          <div className="contenedor-bg">
-            <Slides setIsInit={setIsInit} toggleInit={toggleInit} />
-          </div>
-        ) : null}
-      </div>
-      <div>
-        {!isInit ? (
-          <div className="contenedor">
-            <TomaSignals isInit={isInit} toggleInit={toggleInit} />
-          </div>
-        ) : null}
-      </div>
-    </Container>
-  );
+   
+   
+    return (
+      <Container>
+        <div>
+          {!actualUser.isactive ? (
+            <div className="contenedor-bg">
+              <Slides toggleInit={toggleInit} />
+            </div>
+          ) : null}
+        </div>
+        <div>
+          {actualUser.isactive ? (
+            <div className="contenedor">
+              <TomaSignals toggleInit={toggleInit} />
+            </div>
+          ) : null}
+        </div>
+      </Container>
+    );
 }
 
 //#beginregion estilos

@@ -32,7 +32,7 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
         <div className="LinksContainer" key={label}>
           <NavLink
             to={to}
-            className={({ isActive }) => `Links${isActive ? `  active` : ``}`}
+            className={({ isactive }) => `Links${isactive ? `  active` : ``}`}
           >
             <div className="Linkicon">{icon}</div>
             {sidebarOpen && <span>{label}</span>}
@@ -44,7 +44,7 @@ export function Sidebar({ sidebarOpen, setSidebarOpen }) {
         <div className="LinksContainer" key={label}>
           <NavLink
             to={to}
-            className={({ isActive }) => `Links${isActive ? `  active` : ``}`}
+            className={({ isactive }) => `Links${isactive ? `  active` : ``}`}
           >
             <div className="Linkicon">{icon}</div>
             {sidebarOpen && <span>{label}</span>}

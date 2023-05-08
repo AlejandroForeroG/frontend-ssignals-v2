@@ -1,19 +1,17 @@
-import { useSelector } from "react-redux";
-import { Canvas} from "./signalsChart";
-
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { Grapher } from "./Grapher";
+
 export function Charts() {
   const signals = useSelector((state) => state.signals);
 
+  function onButtonClick(chart) {
+    chart.data.datasets.forEach((dataset) => {
+      dataset.data.push(1);
+    });
+    chart.update();
+  }
 
-
-   function onButtonClick(chart){
-            chart.data.datasets.forEach((dataset) => {
-              dataset.data.push(1);
-            });
-            chart.update();
-          }
-        
   return (
     <Container>
       <div className="signalsContainer">
@@ -23,7 +21,8 @@ export function Charts() {
               <p>{signal.name}</p>
               <p>Tm:[ {signal.samplingTime} S]</p>
             </div>
-            <div className="canvasContainer">{Canvas(signal,onButtonClick)}
+            <div className="canvasContainer">
+              {Grapher(signal, onButtonClick)}
             </div>
           </div>
         ))}
@@ -31,6 +30,7 @@ export function Charts() {
     </Container>
   );
 }
+
 const Container = styled.div`
   .signalsContainer {
     display: flex;
@@ -67,8 +67,8 @@ const Container = styled.div`
       }
       .canvasContainer {
         margin: 10px;
-        width:500px;
-        height:315px;
+        width: 500px;
+        height: 315px;
       }
     }
   }

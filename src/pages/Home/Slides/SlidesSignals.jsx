@@ -38,7 +38,7 @@ export function SlidesSignals({ handleSlideBack, handleSlide }) {
   function handleSubmit(event) {
     event.preventDefault();
     dispatch(setTime(selectedValues));
-    handleSlide();
+    handleSlide(); 
   }
 
   return (

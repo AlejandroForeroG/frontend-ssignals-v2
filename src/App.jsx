@@ -3,10 +3,12 @@ import { MyRoutes } from "./routers/routes";
 import { Sidebar } from "./components/Sidebar";
 import { useState } from "react";
 import styled from "styled-components";
-import { useGetUserData } from "./hooks/useGetUser";
+
+
+
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
- 
+
   return (
     <>
       <BrowserRouter>

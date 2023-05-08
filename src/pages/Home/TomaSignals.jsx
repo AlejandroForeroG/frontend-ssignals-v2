@@ -4,12 +4,14 @@ import { useSelector } from "react-redux";
 import { BiPowerOff } from "react-icons/bi";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Charts } from "../../components/Signals/chart";
+import { Charts } from "../../components/Signals/Charts";
 
 export function TomaSignals({  toggleInit }) {
   const actualUser = useSelector((state) => state.user);
   const signals = useSelector((state) => state.signals.slice(0, 5));
   const dispatch = useDispatch();
+
+
 
   return (
     <Container>
@@ -41,6 +43,8 @@ export function TomaSignals({  toggleInit }) {
     </Container>
   );
 }
+
+
 const Container = styled.div`
   padding: 30px;
   display: flex;

@@ -3,7 +3,6 @@ import signalsReducer from "./slices/Signals";
 import userReducer from "./slices/user";
 import slideReducer from "./slices/Slide";
 import userApi from "./services/userApi";
-import thunk from "redux-thunk";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +10,7 @@ export const store = configureStore({
     signals: signalsReducer,
     user: userReducer,
     slide: slideReducer,
+    
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(userApi.middleware),

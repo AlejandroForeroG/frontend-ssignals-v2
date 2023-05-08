@@ -1,35 +1,29 @@
 //importaciones 📁
-//modulos
-import io from "socket.io-client";
+
+import ReactLoading from "react-loading";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-//componentes
-import { editUser } from "../../store/slices/user";
-import { setInitSignals } from "../../store/slices/Signals";
 import { Slides } from "./Slides/Slides";
 import { TomaSignals } from "./TomaSignals";
+import { setInitSignals } from "../../store/slices/Signals";
+import { editUser } from "../../store/slices/user";
 import { useGetUserData } from "../../hooks/useGetUser";
-//metodos de api
-
 import { useEditUserMutation } from "../../store/services/userApi";
-import ReactLoading from "react-loading";
-//TODO: trabajas con sockets
+import { useState } from "react";
+import { io } from "socket.io-client";
 
-// const socket = io("http://192.168.10.12:3100");
+import { SlidesSignals } from "./Slides/SlidesSignals";
 
-//funcion principal 📑
 export function Home() {
-  //estado local
   const dispatch = useDispatch();
+  const socket = io("http://192.168.10.15:3100");
 
-  
   const [editUserDB, { error, isLoading }] = useEditUserMutation();
   const actualUser = useSelector((state) => state.user);
-  const { data: user, isLoadingDB, isSuccess } = useGetUserData();
-  const [isSampling, setIsSampling] = useState(); 
-  
+
+  const { data: user, isLoadingDB } = useGetUserData();
+  const [pressed, setPressed] = useState(true);
 
   if (isLoadingDB || isLoading || !user || !actualUser)
     return (
@@ -49,44 +43,95 @@ export function Home() {
         />
       </div>
     );
-    
-    if (error) return <p>Oh no, there was an error</p>;
-     
 
+  if (error) return <p>Oh no, hubo un error recarga la pagina ☹</p>;
+
+  const clickbutton = () => {
+    setPressed(!pressed);
+    if(pressed){
+      state =1 
+    }else{
+      state = 0
+    }
+    socket.emit("btninit", state);
+  };
+
+  //funcion start finisj
+  let state = 0;
   const toggleInit = async () => {
-    
     const estado = actualUser.isactive ? false : true;
+    if (estado === true) {
+      state = 1;
+    } else {
+      state = 0;
+    }
+    socket.emit("btninit", state);
+    console.log(state);
     dispatch(editUser({ ...actualUser, isactive: estado }));
     await dispatch(setInitSignals(estado));
     await editUserDB({ ...actualUser, isactive: estado });
   };
 
-  //retorno del componente
-   
-   
-    return (
-      <Container>
-        <div>
-          {!actualUser.isactive ? (
-            <div className="contenedor-bg">
-              <Slides toggleInit={toggleInit} />
-            </div>
-          ) : null}
-        </div>
-        <div>
-          {actualUser.isactive ? (
-            <div className="contenedor">
-             
-              <TomaSignals toggleInit={toggleInit} />
-            </div>
-          ) : null}
-        </div>
-      </Container>
-    );
+  return (
+    <Container>
+      <div className="container-prueba">
+      <button className={pressed? "clicko unpress":"clicko press"} onClick={clickbutton}>
+        🤠
+      </button>
+
+      </div>
+      <div>
+        {!actualUser.isactive && (
+          <div className="contenedor-bg">
+            <Slides toggleInit={toggleInit} />
+          </div>
+        )}
+      </div>
+      <div>
+        {actualUser.isactive && (
+          <div className="contenedor">
+            <TomaSignals toggleInit={toggleInit} />
+          </div>
+        )}
+      </div>
+    </Container>
+  );
 }
 
-//#beginregion estilos
 const Container = styled.div`
+//prueba
+.container-prueba{
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+  .clicko {
+    position: absolute;
+    top: 10px;
+    left: 200px;
+    z-index: 100;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: #d4e51d;
+      
+    }
+  }
+  .unpress{
+    background-color: #c6282b;
+  }
+  .press{
+    background-color: #d4e51d;
+  }
+
+  //prueba
   height: 100%;
   .contenedor-bg {
     width: 95vw;
@@ -110,4 +155,3 @@ const Container = styled.div`
     opacity: 0;
   }
 `;
-//#endregion

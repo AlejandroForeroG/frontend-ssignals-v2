@@ -29,20 +29,18 @@ ChartJS.register(
   Filler
 );
 
-export function Canvas(signal,onButtonClick) {
+export function Grapher(signal, onButtonClick) {
   const chartRef = useRef();
 
   useEffect(() => {
     const chart = chartRef.current;
     if (chart) {
-
     }
   });
 
-
   const labels = signal.labels;
-let options = {};
-  if ((signal.isShort  )) {
+  let options = {};
+  if (signal.isShort) {
     options = {
       responsive: true,
       type: "line",
@@ -95,14 +93,16 @@ let options = {};
 
   return (
     <>
-    <Line
-      options={options}
-      data={data}
-      width={500}
-      height={300}
-      ref={chartRef}
-    />
-      <button onClick={() => onButtonClick(chartRef.current)}>Actualizar data</button>
+      <Line
+        options={options}
+        data={data}
+        width={500}
+        height={300}
+        ref={chartRef}
+      />
+      <button onClick={() => onButtonClick(chartRef.current)}>
+        Actualizar data
+      </button>
     </>
   );
 }

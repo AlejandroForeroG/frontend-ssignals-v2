@@ -6,7 +6,6 @@ const arrayTen = Array.from(Array(10), (_, i) => (i + 1).toString());
 const arrayHundred = Array.from(Array(100), (_, i) => (i + 1).toString());
 const arrayThousands = Array.from(Array(1000), (_, i) => (i + 1).toString());
 
-
 //estado inicial de las señales
 const initialState = [
   {
@@ -76,15 +75,13 @@ const initialState = [
   },
 ];
 
-
-
 export const signalsSlice = createSlice({
   name: "signals",
   initialState,
   reducers: {
     setInitSignals: (state, action) => {
-      state=initialState;
-      console.log(state)
+      state = initialState;
+      console.log(state);
     },
     setTime: (state, action) => {
       action.payload.forEach((signal) => {
@@ -94,8 +91,8 @@ export const signalsSlice = createSlice({
           }
         });
       });
-    }
+    },
   },
 });
-export const { setTime,setInitSignals } = signalsSlice.actions;
+export const { setTime, setInitSignals, setObject } = signalsSlice.actions;
 export default signalsSlice.reducer;

@@ -12,15 +12,19 @@ import { useGetUserData } from "../../hooks/useGetUser";
 import { useEditUserMutation } from "../../store/services/userApi";
 import { useState } from "react";
 import { io } from "socket.io-client";
+import { useEffect } from "react";
 
-import { SlidesSignals } from "./Slides/SlidesSignals";
+export function Home({socket}) {
+  
 
-export function Home() {
+ 
+
   const dispatch = useDispatch();
-  const socket = io("http://192.168.10.15:3100");
+
 
   const [editUserDB, { error, isLoading }] = useEditUserMutation();
   const actualUser = useSelector((state) => state.user);
+  const signals = useSelector((state) => state.signals.slice());
 
   const { data: user, isLoadingDB } = useGetUserData();
   const [pressed, setPressed] = useState(true);
@@ -48,49 +52,65 @@ export function Home() {
 
   const clickbutton = () => {
     setPressed(!pressed);
-    if(pressed){
-      state =1 
-    }else{
-      state = 0
-    }
-    socket.emit("btninit", state);
-  };
-
-  //funcion start finisj
-  let state = 0;
-  const toggleInit = async () => {
-    const estado = actualUser.isactive ? false : true;
-    if (estado === true) {
+    if (pressed) {
       state = 1;
     } else {
       state = 0;
     }
     socket.emit("btninit", state);
-    console.log(state);
+  };
+
+
+
+
+
+  //funcion start finish
+  let state;
+  const offConnection = async () => {
+    const estado = false;
+    state = 0;
+    socket.emit("btninit", state);
     dispatch(editUser({ ...actualUser, isactive: estado }));
     await dispatch(setInitSignals(estado));
     await editUserDB({ ...actualUser, isactive: estado });
   };
 
+  const onConnection = async () => {
+    const estado = true;
+    state = 1;
+    socket.emit("btninit", state);
+    dispatch(editUser({ ...actualUser, isactive: estado }));
+    await dispatch(setInitSignals(estado));
+    await editUserDB({ ...actualUser, isactive: estado });
+
+    socket.emit("info",{actualUser,signals});
+  };
+
+
+
+
   return (
     <Container>
       <div className="container-prueba">
-      <button className={pressed? "clicko unpress":"clicko press"} onClick={clickbutton}>
-        🤠
-      </button>
-
+        <button
+          className={pressed ? "clicko unpress" : "clicko press"}
+          onClick={clickbutton}
+        >
+          🤠
+        </button>
       </div>
+
       <div>
         {!actualUser.isactive && (
           <div className="contenedor-bg">
-            <Slides toggleInit={toggleInit} />
+            <Slides onConnection={onConnection} />
           </div>
         )}
       </div>
       <div>
         {actualUser.isactive && (
           <div className="contenedor">
-            <TomaSignals toggleInit={toggleInit} />
+            <TomaSignals offConnection={offConnection} socket ={socket}/>
           </div>
         )}
       </div>
@@ -99,14 +119,14 @@ export function Home() {
 }
 
 const Container = styled.div`
-//prueba
-.container-prueba{
-  width: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-}
+  //prueba
+  .container-prueba {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
   .clicko {
     position: absolute;
     top: 10px;
@@ -121,13 +141,12 @@ const Container = styled.div`
     transition: all 0.3s ease;
     &:hover {
       background-color: #d4e51d;
-      
     }
   }
-  .unpress{
+  .unpress {
     background-color: #c6282b;
   }
-  .press{
+  .press {
     background-color: #d4e51d;
   }
 

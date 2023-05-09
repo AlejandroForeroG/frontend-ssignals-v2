@@ -1,16 +1,14 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { Grapher } from "./Grapher";
+import SignalController from "../../controllers/SignalController";
 
-export function Charts() {
+export function Charts({socket}) {
   const signals = useSelector((state) => state.signals);
-
-  function onButtonClick(chart) {
-    chart.data.datasets.forEach((dataset) => {
-      dataset.data.push(1);
-    });
-    chart.update();
-  }
+  let signalsArray=[];
+  // function onButtonClick(chart) {
+  //     signalsArray.push(new SignalsController(chart));
+  // }
 
   return (
     <Container>
@@ -22,7 +20,7 @@ export function Charts() {
               <p>Tm:[ {signal.samplingTime} S]</p>
             </div>
             <div className="canvasContainer">
-              {Grapher(signal, onButtonClick)}
+              <Grapher signal={signal} socket = {socket} / >
             </div>
           </div>
         ))}

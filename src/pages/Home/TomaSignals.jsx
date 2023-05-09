@@ -6,13 +6,17 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Charts } from "../../components/Signals/Charts";
 
-export function TomaSignals({  toggleInit }) {
+export function TomaSignals({  offConnection,socket }) {
   const actualUser = useSelector((state) => state.user);
   const signals = useSelector((state) => state.signals.slice(0, 5));
   const dispatch = useDispatch();
 
 
-
+  useEffect(() => {
+    socket.on("temperature", (data) => {
+      console.log(data);
+  },[socket])
+})
   return (
     <Container>
       <div className="header-inicio">
@@ -29,7 +33,7 @@ export function TomaSignals({  toggleInit }) {
             </div>
           </div>
           <div className="boton-contenedor">
-            <button className="boton" onClick={toggleInit}>
+            <button className="boton" onClick={offConnection}>
               <div className="icon">
                 <BiPowerOff />
               </div>
@@ -38,7 +42,7 @@ export function TomaSignals({  toggleInit }) {
         </div>
       </div>
       <div className="signalsContainer">
-        <Charts />
+        <Charts socket = {socket} />
       </div>
     </Container>
   );

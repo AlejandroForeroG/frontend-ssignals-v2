@@ -1,6 +1,9 @@
 import React from "react";
 import { useRef, useEffect } from "react";
 import Signals from "../../store/slices/Signals";
+import SignalController from "../../controllers/SignalController";
+import { Line } from "react-chartjs-2";
+import { config } from "../../controllers/configSignal";
 import {
   Chart,
   CategoryScale,
@@ -13,7 +16,6 @@ import {
   Legend,
   Filler,
 } from "chart.js";
-import { Line, getDatasetAtEvent } from "react-chartjs-2";
 
 const ChartJS = Chart;
 
@@ -29,67 +31,24 @@ ChartJS.register(
   Filler
 );
 
-export function Grapher(signal, onButtonClick) {
+export function Grapher({ signal, socket }) {
+  const id = signal.id;
   const chartRef = useRef();
 
-  useEffect(() => {
-    const chart = chartRef.current;
-    if (chart) {
-    }
-  });
+  const { options, data } = config(signal);
 
-  const labels = signal.labels;
-  let options = {};
-  if (signal.isShort) {
-    options = {
-      responsive: true,
-      type: "line",
-      plugins: {
-        legend: {
-          position: "top",
-        },
-        title: {
-          display: false,
-        },
-      },
-    };
-  } else {
-    options = {
-      animation: false,
-      scales: {
-        y: {
-          beginAtZero: true,
-        },
-      },
-      elements: {
-        point: {
-          radius: 0,
-        },
-
-        responsive: true,
-        type: "line",
-        plugins: {
-          legend: {
-            position: "top",
-          },
-          title: {
-            display: false,
-          },
-        },
-      },
-    };
-  }
-
-  const data = {
-    labels,
-    datasets: [
-      {
-        data: [],
-        fill: true,
-        backgroundColor: "rgba(51, 214, 146, 0.7)",
-      },
-    ],
-  };
+  // useEffect(() => {
+  //   const chart = chartRef.current;
+  //   const signalObj = new SignalController(chartRef.current);
+  //   const evento = `${signal.data}`;
+  //   socket.on(evento, (data) => {
+  //     console.log(data);
+  //     signalObj.mensaje();
+  //     return() =>{
+  //       socket.off(evento);
+  //     }
+  //   },[]);
+  // });
 
   return (
     <>
@@ -100,7 +59,13 @@ export function Grapher(signal, onButtonClick) {
         height={300}
         ref={chartRef}
       />
-      <button onClick={() => onButtonClick(chartRef.current)}>
+      <button
+        onClick={() => {
+          {
+            console.log(signalObj);
+          }
+        }}
+      >
         Actualizar data
       </button>
     </>

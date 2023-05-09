@@ -14,13 +14,15 @@ import { useState } from "react";
 import { io } from "socket.io-client";
 import { useEffect } from "react";
 
-export function Home({socket}) {
-  
+export function Home() {
+  const [socket, setSocket] = useState(null);
 
- 
+  useEffect(() => {
+    setSocket(io("http://192.168.10.24:3100"));
+   
+  }, []);
 
   const dispatch = useDispatch();
-
 
   const [editUserDB, { error, isLoading }] = useEditUserMutation();
   const actualUser = useSelector((state) => state.user);
@@ -60,10 +62,6 @@ export function Home({socket}) {
     socket.emit("btninit", state);
   };
 
-
-
-
-
   //funcion start finish
   let state;
   const offConnection = async () => {
@@ -83,11 +81,8 @@ export function Home({socket}) {
     await dispatch(setInitSignals(estado));
     await editUserDB({ ...actualUser, isactive: estado });
 
-    socket.emit("info",{actualUser,signals});
+    socket.emit("info", { actualUser, signals });
   };
-
-
-
 
   return (
     <Container>
@@ -110,7 +105,7 @@ export function Home({socket}) {
       <div>
         {actualUser.isactive && (
           <div className="contenedor">
-            <TomaSignals offConnection={offConnection} socket ={socket}/>
+            <TomaSignals offConnection={offConnection} socket={socket} />
           </div>
         )}
       </div>

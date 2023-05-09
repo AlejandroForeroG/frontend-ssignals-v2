@@ -3,7 +3,7 @@
   export const userApi = createApi({
     reducerPath: "userApi",
     baseQuery: fetchBaseQuery({
-      baseUrl: "http://192.168.10.15:3100/api",
+      baseUrl: "http://192.168.10.24:3100/api",
     }),
     endpoints: (builder) => ({
       getUsers: builder.query({

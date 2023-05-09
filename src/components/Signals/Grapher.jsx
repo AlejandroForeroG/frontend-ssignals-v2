@@ -37,19 +37,21 @@ export function Grapher({ signal, socket }) {
 
   const { options, data } = config(signal);
 
-  // useEffect(() => {
-  //   const chart = chartRef.current;
-  //   const signalObj = new SignalController(chartRef.current);
-  //   const evento = `${signal.data}`;
-  //   socket.on(evento, (data) => {
-  //     console.log(data);
-  //     signalObj.mensaje();
-  //     return() =>{
-  //       socket.off(evento);
-  //     }
-  //   },[]);
-  // });
+  useEffect(() => {
+    const chart = chartRef.current;
+    const signalObj = new SignalController(chartRef.current);
+    const evento = `${signal.data}`;
+    if(socket) {
+        socket.on(evento, (data) => {
+          console.log(data);
+          signalObj.mensaje();
+        });  
+      
+    }
+  },[]);
 
+
+  
   return (
     <>
       <Line

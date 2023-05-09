@@ -6,7 +6,7 @@ import { DataBase } from "../pages/DataBase";
 export function MyRoutes({socket}) {
   return (
     <Routes>
-      <Route path="/" element={<Home socket = {socket} />} />
+      <Route path="/" element={<Home  />} />
       <Route path="/Pruebas" element={<Pruebas />} />
       <Route path="/BaseDatos" element={<DataBase />} />
     </Routes>

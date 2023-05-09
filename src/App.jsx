@@ -5,7 +5,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { io } from "socket.io-client";
 import { useEffect } from "react";
-const socket = io("http://192.168.10.15:3100");
+
 
 function App() {
  
@@ -24,7 +24,7 @@ function App() {
             />
           </section>
           <section>
-            <MyRoutes socket ={socket} />
+            <MyRoutes  />
           </section>
         </Container>
       </BrowserRouter>

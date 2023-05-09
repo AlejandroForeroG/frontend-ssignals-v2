@@ -1,4 +1,6 @@
 import valuesAdm from "./valuesAdm";
+
+let counter = 0;
 class SignalController{
     constructor(chart){
         this.chart = chart;

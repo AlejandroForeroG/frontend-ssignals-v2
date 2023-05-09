@@ -13,10 +13,9 @@ export function TomaSignals({  offConnection,socket }) {
 
 
   useEffect(() => {
-    socket.on("temperature", (data) => {
-      console.log(data);
-  },[socket])
-})
+  
+  },[])
+
   return (
     <Container>
       <div className="header-inicio">

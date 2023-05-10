@@ -5,19 +5,19 @@ class valuesAdm {
     this.cont = 0;
   }
 
-  dataRun(chart, sample, variable) {
+  dataRun(chart,nSamples, sample, variable) {
     // Se evaluan los  los primeros 10 símbolos
     // y evitar la acumulación de etiquetas y datos en el gráfico
     if (this.prober !== 1) {
-      if (sample <= 15) {
+      if (sample <= nSamples) {
         this.addInit(chart, sample, variable);
       } else {
         this.ad(chart, sample, variable);
-        sessionStorage.setItem("prober", this.prober);
+        // sessionStorage.setItem("prober", this.prober);
       }
     } else {
       this.ad(chart, sample, variable);
-      sessionStorage.setItem("prober", this.prober);
+      // sessionStorage.setItem("prober", this.prober);
     }
   }
 
@@ -26,7 +26,7 @@ class valuesAdm {
     chart.data.datasets.forEach((dataset) => {
       dataset.data.push(variable);
     });
-    this.almacenamiento(chart);
+    // this.almacenamiento(chart);
     chart.update();
     this.counter++;
   }
@@ -42,37 +42,39 @@ class valuesAdm {
 
   // Método para agregar datos al gráfico antes de los primeros 10 datos
   addData(chart, sample, variable) {
-    chart.data.labels.push(sample);
+    // chart.data.labels.push(toString(sample));
+    const newLabels = [...chart.data.labels,sample];
+    chart.data.labels = newLabels;
     chart.data.datasets.forEach((dataset) => {
       dataset.data.push(variable);
     });
-    this.almacenamiento(chart);
+    // this.almacenamiento(chart);
   }
   //metodo para eliminar datos del gráfico
   removeData(chart) {
-    chart.data.labels.shift();
+    chart.data.labels.splice(0, 1);
     chart.data.datasets.forEach((dataset) => {
       dataset.data.shift();
     });
   }
 
   // Método para manejar el almacenamiento de datos en sessionStorage
-  almacenamiento(chart) {
-    const valor = sessionStorage.getItem("prober");
-    const nombre = chart.data.datasets[0].label;
-    const datos = chart.data.datasets[0].data.slice(0, 14);
-    const bool = valor !== 1 ? datos.length <= 14 : datos.length === 14;
-    if (!bool) {
-      return;
-    }
-    sessionStorage.setItem(nombre, datos);
-  }
+  // almacenamiento(chart) {
+  //   const valor = sessionStorage.getItem("prober");
+  //   const nombre = chart.data.datasets[0].label;
+  //   const datos = chart.data.datasets[0].data.slice(0, 14);
+  //   const bool = valor !== 1 ? datos.length <= 14 : datos.length === 14;
+  //   if (!bool) {
+  //     return;
+  //   }
+  //   sessionStorage.setItem(nombre, datos);
+  // }
 
   clearData() {
     this.counter = [];
     this.prober = 0;
     this.cont = 0;
-    sessionStorage.clear();
+    // sessionStorage.clear();
   }
 }
 

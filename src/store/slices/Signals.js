@@ -11,7 +11,7 @@ const initialState = [
   {
     id: 1,
     name: "Temperatura",
-    data: "temperature",
+    dataName: "temperature",
     unit: "°C",
     labels: arrayTen,
     values: [],
@@ -22,7 +22,7 @@ const initialState = [
   {
     id: 2,
     name: "Beats Por Minuto",
-    data: "bpm",
+    dataName: "bpm",
     unit: "bpm",
     labels: arrayTen,
     values: [],
@@ -33,7 +33,7 @@ const initialState = [
   {
     id: 3,
     name: "Saturación De Oxígeno",
-    data: "oxigenSaturation",
+    dataName: "oxigenSaturation",
     unit: "%",
     labels: arrayTen,
     values: [],
@@ -44,7 +44,7 @@ const initialState = [
   {
     id: 4,
     name: "GSR",
-    data: "grsVoltage",
+    dataName: "grsVoltage",
     unit: "V",
     labels: arrayHundred,
     values: [],
@@ -55,7 +55,7 @@ const initialState = [
   {
     id: 5,
     name: "Flujo De Aire",
-    data: "airflux",
+    dataName: "airflux",
     unit: "m3/h",
     labels: arrayThousands,
     values: [],
@@ -66,6 +66,7 @@ const initialState = [
   {
     id: 6,
     name: "ECG",
+    dataName:"ECG",
     unit: "mV",
     labels: arrayThousands,
     values: [],

@@ -34,17 +34,19 @@ ChartJS.register(
 export function Grapher({ signal, socket }) {
   const id = signal.id;
   const chartRef = useRef();
-
+//FUNCION PARA LOS AJUSTES DE LA GRAFICA 
   const { options, data } = config(signal);
 
   useEffect(() => {
     const chart = chartRef.current;
-    const signalObj = new SignalController(chartRef.current);
-    const evento = `${signal.data}`;
+    const signalObj = new SignalController(chartRef.current,signal);
+    const evento = `${signal.dataName}`;
+    console.log(evento)
     if(socket) {
-        socket.on(evento, (data) => {
-          console.log(data);
-          signalObj.mensaje();
+      socket.on(evento, (data) => {
+          console.log("todo ok esperadno trigger")
+          
+          signalObj.ejecutor(data);
         });  
       
     }
@@ -61,15 +63,6 @@ export function Grapher({ signal, socket }) {
         height={300}
         ref={chartRef}
       />
-      <button
-        onClick={() => {
-          {
-            console.log(signalObj);
-          }
-        }}
-      >
-        Actualizar data
-      </button>
     </>
   );
 }

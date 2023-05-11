@@ -3,7 +3,7 @@ import { useRef, useEffect } from "react";
 import Signals from "../../store/slices/Signals";
 import SignalController from "../../controllers/SignalController";
 import { Line } from "react-chartjs-2";
-import { config } from "../../controllers/configSignal";
+import { config} from "../../controllers/configSignal";
 import { useState } from "react";
 import { appContext } from "../../pages/Home/Home";
 import {
@@ -36,24 +36,32 @@ ChartJS.register(
 export function Grapher({ signal, socket }) {
   const id = signal.id;
   const clear = useContext(appContext);
-
-  const chartRef = useRef();
+  
+  const chartRef = useRef(null);
+  
   //FUNCION PARA LOS AJUSTES DE LA GRAFICA
   const { options, data } = config(signal);
-  const [signalsObject, setSignalsObject] = useState(null);
-
+  const [signalsObject, setSignalsObject] = useState({});
+  
   useEffect(() => {
     const chart = chartRef.current;
-    const signalObj = new SignalController(chartRef.current, signal);
+    const signalObj = new SignalController(chart, signal);
     const evento = `${signal.dataName}`;
-    console.log(signalObj);
+
     if (socket) {
       socket.on(evento, (data) => {
         signalObj.ejecutor(data);
       });
     }
     setSignalsObject(signalObj);
-  }, []);
+    return () => {
+      if (socket) {
+        socket.off(evento);
+        signalObj.destroy();
+      }
+    }
+   
+  }, [ ]);
 
 
 

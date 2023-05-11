@@ -38,7 +38,7 @@ export function SlidesFinal({ handleSlideBack, onWait }) {
               </ul>
               <div className="valores-tiempos">
                 {signals.map((signal) => (
-                  <p>{signal.samplingTime} s</p>
+                  <p key={signal.id}>{signal.samplingTime} s</p>
                 ))}
               </div>
             </div>

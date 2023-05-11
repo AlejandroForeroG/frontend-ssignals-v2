@@ -82,7 +82,7 @@ export const signalsSlice = createSlice({
   reducers: {
     setInitSignals: (state, action) => {
       state = initialState;
-      console.log(state);
+      
     },
     setTime: (state, action) => {
       action.payload.forEach((signal) => {

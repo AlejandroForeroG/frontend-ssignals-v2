@@ -32,6 +32,10 @@ class SignalController {
     this.valuesAdm.clearData();
     this.chart.update();
   }
+
+  destroy(){
+    this.chart.destroy();
+  }
 }
 
 export default SignalController;

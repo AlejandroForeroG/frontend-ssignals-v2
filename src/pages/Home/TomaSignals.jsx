@@ -6,15 +6,13 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { Charts } from "../../components/Signals/Charts";
 
-export function TomaSignals({  offConnection,socket }) {
+export function TomaSignals({ offConnection,socket }) {
   const actualUser = useSelector((state) => state.user);
   const signals = useSelector((state) => state.signals.slice(0, 5));
   const dispatch = useDispatch();
 
 
-  useEffect(() => {
-  
-  },[])
+
 
   return (
     <Container>
@@ -41,7 +39,7 @@ export function TomaSignals({  offConnection,socket }) {
         </div>
       </div>
       <div className="signalsContainer">
-        <Charts socket = {socket}  />
+        <Charts socket = {socket} />
       </div>
     </Container>
   );

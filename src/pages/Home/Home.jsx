@@ -14,7 +14,6 @@ import { createContext, useState } from "react";
 import { io } from "socket.io-client";
 import { useEffect } from "react";
 
-
 export const appContext = createContext();
 
 export function Home() {
@@ -24,7 +23,7 @@ export function Home() {
   }, []);
   const dispatch = useDispatch();
 
-  const [editUserDB, { error, isLoading }] = useEditUserMutation();
+  const [editUserDB, { error, isLoading, isSuccess }] = useEditUserMutation();
   const actualUser = useSelector((state) => state.user);
   const signals = useSelector((state) => state.signals.slice());
 
@@ -56,13 +55,10 @@ export function Home() {
   const clickbutton = () => {
     setPressed(!pressed);
     if (pressed) {
-      state = 1
-      setClear(false);
+      onStart();
     } else {
-      state = 0;
-      setClear(true);
+     onRestart()
     }
-    socket.emit("btninit", state);
   };
 
   //funcion start finish
@@ -76,48 +72,54 @@ export function Home() {
     await editUserDB({ ...actualUser, isactive: estado });
   };
 
-  const onConnection = async () => {
+  const onWait = async () => {
     const estado = true;
-    state = 1;
-    socket.emit("btninit", state);
     dispatch(editUser({ ...actualUser, isactive: estado }));
     await dispatch(setInitSignals(estado));
     await editUserDB({ ...actualUser, isactive: estado });
-
     socket.emit("info", { actualUser, signals });
+  };
+
+  const onStart = async () => {
+    setClear(false);
+    state = 1;
+    socket.emit("btninit", state);
+  };
+
+  const onRestart = async () => {
+    setClear(true);
+    state = 0;
+    socket.emit("btninit", state);
   };
 
   return (
     <Container>
-      <div className="container-prueba">
-        <button
-          className={pressed ? "clicko unpress" : "clicko press"}
-          onClick={clickbutton}
-        >
-          🤠
-        </button>
-      </div>
-
-      <div>
-        {!actualUser.isactive && (
-          <div className="contenedor-bg">
-            <Slides onConnection={onConnection} />
-          </div>
-        )}
-      </div>
       <appContext.Provider value={clear}>
-      <div>
-        {actualUser.isactive && (
-          <div className="contenedor">
-            <TomaSignals
-              offConnection={offConnection}
-              socket={socket}
-             
-            />
-          </div>
-        )}
-      </div>
-       </appContext.Provider>
+        <div className="container-prueba">
+          <button
+            className={pressed ? "clicko unpress" : "clicko press"}
+            onClick={clickbutton}
+          >
+            🤠
+          </button>
+        </div>
+
+        <div>
+          {!actualUser.isactive && (
+            <div className="contenedor-bg">
+              <Slides onWait={onWait} />
+            </div>
+          )}
+        </div>
+
+        <div>
+          {actualUser.isactive && (
+            <div className="contenedor">
+              <TomaSignals offConnection={offConnection} socket={socket} />
+            </div>
+          )}
+        </div>
+      </appContext.Provider>
     </Container>
   );
 }

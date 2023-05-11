@@ -1,6 +1,6 @@
 import valuesAdm from "./valuesAdm";
 
-let counter = 0;
+
 class SignalController {
   constructor(chart, signal) {
     this.chart = chart;
@@ -28,7 +28,7 @@ class SignalController {
   clear(){
     this.chart.data.labels = [...this.initLabels];
     this.chart.data.datasets[0].data = [];
-     this.InitSample = 1;
+    this.InitSample = 1;
     this.valuesAdm.clearData();
     this.chart.update();
   }

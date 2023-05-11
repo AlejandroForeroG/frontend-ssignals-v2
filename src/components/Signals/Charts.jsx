@@ -5,10 +5,6 @@ import SignalController from "../../controllers/SignalController";
 
 export function Charts({ socket }) {
   const signals = useSelector((state) => state.signals);
-  let signalsArray = [];
-  // function onButtonClick(chart) {
-  //     signalsArray.push(new SignalsController(chart));
-  // }
 
   return (
     <Container>

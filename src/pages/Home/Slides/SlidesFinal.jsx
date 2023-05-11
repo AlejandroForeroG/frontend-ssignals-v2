@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { ButtonP } from "../../../components/elements/ButtonP";
 
-export function SlidesFinal({ handleSlideBack, onConnection }) {
+export function SlidesFinal({ handleSlideBack, onWait }) {
   const actualUser = useSelector((state) => state.user);
   const signals = useSelector((state) => state.signals.slice(0, 5));
 
@@ -57,7 +57,7 @@ export function SlidesFinal({ handleSlideBack, onConnection }) {
           <ButtonP
             text="Todo correcto iniciemos!! "
             color="primary"
-            handle={onConnection}
+            handle={onWait}
           ></ButtonP>
         </div>
       </div>

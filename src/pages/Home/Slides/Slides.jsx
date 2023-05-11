@@ -12,7 +12,7 @@ import { useGetUsersQuery } from "../../../store/services/userApi";
 import { v } from "../../../styles/Variables";
 
 //funcion principal
-export function Slides({ onConnection }) {
+export function Slides({ onWait }) {
 
   //funciones de cambio de estado
   const [slide, setSlide] = useState(0);
@@ -94,7 +94,7 @@ export function Slides({ onConnection }) {
             <div className={slide === 3 ? "contenedor" : "off"}>
               <SlidesFinal
                 handleSlideBack={handleSlideBack}
-                onConnection={onConnection}
+                onWait={onWait}
               />
             </div>
           </div>

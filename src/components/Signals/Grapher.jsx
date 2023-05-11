@@ -61,8 +61,7 @@ export function Grapher({ signal, socket }) {
   useEffect(() => {
     if (clear) {
       console.log("clearing");
-      signalsObject.clear();
-      
+      signalsObject.clear();   
     }
   }, [clear]);
 

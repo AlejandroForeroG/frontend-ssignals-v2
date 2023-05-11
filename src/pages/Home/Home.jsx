@@ -52,18 +52,12 @@ export function Home() {
 
   if (error) return <p>Oh no, hubo un error recarga la pagina ☹</p>;
 
-  const clickbutton = () => {
-    setPressed(!pressed);
-    if (pressed) {
-      onStart();
-    } else {
-     onRestart()
-    }
-  };
+
 
   //funcion start finish
   let state;
   const offConnection = async () => {
+    setClear(true);
     const estado = false;
     state = 0;
     socket.emit("btninit", state);
@@ -73,6 +67,7 @@ export function Home() {
   };
 
   const onWait = async () => {
+    setClear(false);
     const estado = true;
     dispatch(editUser({ ...actualUser, isactive: estado }));
     await dispatch(setInitSignals(estado));
@@ -95,14 +90,7 @@ export function Home() {
   return (
     <Container>
       <appContext.Provider value={clear}>
-        <div className="container-prueba">
-          <button
-            className={pressed ? "clicko unpress" : "clicko press"}
-            onClick={clickbutton}
-          >
-            🤠
-          </button>
-        </div>
+      
 
         <div>
           {!actualUser.isactive && (
@@ -115,7 +103,7 @@ export function Home() {
         <div>
           {actualUser.isactive && (
             <div className="contenedor">
-              <TomaSignals offConnection={offConnection} socket={socket} />
+              <TomaSignals offConnection={offConnection} onRestart={onRestart} onStart={onStart} socket={socket} />
             </div>
           )}
         </div>
@@ -125,38 +113,7 @@ export function Home() {
 }
 
 const Container = styled.div`
-  //prueba
-  .container-prueba {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
-  }
-  .clicko {
-    position: absolute;
-    top: 10px;
-    left: 200px;
-    z-index: 100;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    &:hover {
-      background-color: #d4e51d;
-    }
-  }
-  .unpress {
-    background-color: #c6282b;
-  }
-  .press {
-    background-color: #d4e51d;
-  }
-
-  //prueba
+ 
   height: 100%;
   .contenedor-bg {
     width: 95vw;

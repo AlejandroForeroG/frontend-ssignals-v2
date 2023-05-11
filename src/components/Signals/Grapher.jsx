@@ -46,24 +46,23 @@ export function Grapher({ signal, socket }) {
     const chart = chartRef.current;
     const signalObj = new SignalController(chartRef.current, signal);
     const evento = `${signal.dataName}`;
-    console.log(evento);
+    console.log(signalObj);
     if (socket) {
       socket.on(evento, (data) => {
         signalObj.ejecutor(data);
       });
     }
-
     setSignalsObject(signalObj);
   }, []);
 
 
 
   useEffect(() => {
-    if (clear) {
+    if (clear&&signalsObject) {
       console.log("clearing");
       signalsObject.clear();   
     }
-  }, [clear]);
+  }, [clear,signalsObject]);
 
   return (
     <>

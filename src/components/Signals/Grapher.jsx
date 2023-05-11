@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useRef, useEffect } from "react";
 import Signals from "../../store/slices/Signals";
 import SignalController from "../../controllers/SignalController";
 import { Line } from "react-chartjs-2";
 import { config } from "../../controllers/configSignal";
+import { useState } from "react";
+import { appContext } from "../../pages/Home/Home";
 import {
   Chart,
   CategoryScale,
@@ -33,27 +35,37 @@ ChartJS.register(
 
 export function Grapher({ signal, socket }) {
   const id = signal.id;
+  const clear = useContext(appContext);
+
   const chartRef = useRef();
-//FUNCION PARA LOS AJUSTES DE LA GRAFICA 
+  //FUNCION PARA LOS AJUSTES DE LA GRAFICA
   const { options, data } = config(signal);
+  const [signalsObject, setSignalsObject] = useState(null);
 
   useEffect(() => {
     const chart = chartRef.current;
-    const signalObj = new SignalController(chartRef.current,signal);
+    const signalObj = new SignalController(chartRef.current, signal);
     const evento = `${signal.dataName}`;
-    console.log(evento)
-    if(socket) {
+    console.log(evento);
+    if (socket) {
       socket.on(evento, (data) => {
-          console.log("todo ok esperadno trigger")
-          
-          signalObj.ejecutor(data);
-        });  
+        signalObj.ejecutor(data);
+      });
+    }
+
+    setSignalsObject(signalObj);
+  }, []);
+
+
+
+  useEffect(() => {
+    if (clear) {
+      console.log("clearing");
+      signalsObject.clear();
       
     }
-  },[]);
+  }, [clear]);
 
-
-  
   return (
     <>
       <Line

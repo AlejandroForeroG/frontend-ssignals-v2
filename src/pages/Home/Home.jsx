@@ -10,18 +10,18 @@ import { setInitSignals } from "../../store/slices/Signals";
 import { editUser } from "../../store/slices/user";
 import { useGetUserData } from "../../hooks/useGetUser";
 import { useEditUserMutation } from "../../store/services/userApi";
-import { useState } from "react";
+import { createContext, useState } from "react";
 import { io } from "socket.io-client";
 import { useEffect } from "react";
 
+
+export const appContext = createContext();
+
 export function Home() {
   const [socket, setSocket] = useState(null);
-
   useEffect(() => {
-    setSocket(io("http://192.168.10.24:3100"));
-   
+    setSocket(io("http://192.168.10.14:3100"));
   }, []);
-
   const dispatch = useDispatch();
 
   const [editUserDB, { error, isLoading }] = useEditUserMutation();
@@ -30,6 +30,7 @@ export function Home() {
 
   const { data: user, isLoadingDB } = useGetUserData();
   const [pressed, setPressed] = useState(true);
+  const [clear, setClear] = useState(false);
 
   if (isLoadingDB || isLoading || !user || !actualUser)
     return (
@@ -55,9 +56,11 @@ export function Home() {
   const clickbutton = () => {
     setPressed(!pressed);
     if (pressed) {
-      state = 1;
+      state = 1
+      setClear(false);
     } else {
       state = 0;
+      setClear(true);
     }
     socket.emit("btninit", state);
   };
@@ -102,13 +105,19 @@ export function Home() {
           </div>
         )}
       </div>
+      <appContext.Provider value={clear}>
       <div>
         {actualUser.isactive && (
           <div className="contenedor">
-            <TomaSignals offConnection={offConnection} socket={socket} />
+            <TomaSignals
+              offConnection={offConnection}
+              socket={socket}
+             
+            />
           </div>
         )}
       </div>
+       </appContext.Provider>
     </Container>
   );
 }

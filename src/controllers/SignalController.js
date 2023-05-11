@@ -12,16 +12,7 @@ class SignalController {
     this.labels = signal.labels;
     this.valuesAdm = new valuesAdm(); //evaluador de seañales
   }
-  mensaje(){
-  
-
-   const chartData = this.chart.data;
-   const newlabel =[...chartData.labels,"1"]
-   this.chart.data = {
-    ...chartData, labels : newlabel
-   }
-   this.chart.update();
-  }
+ 
   ejecutor(data) {
     this.nextValue = data;
     this.valuesAdm.dataRun(
@@ -35,11 +26,9 @@ class SignalController {
 
 
   clear(){
-    this.chart.data.labels = [...signal.labels];
-    this.chart.data.datasets.forEach((dataset) => {
-      dataset.data = [];
-    });
-    this.sample=1;
+    this.chart.data.labels = [...this.initLabels];
+    this.chart.data.datasets[0].data = [];
+     this.InitSample = 1;
     this.valuesAdm.clearData();
     this.chart.update();
   }

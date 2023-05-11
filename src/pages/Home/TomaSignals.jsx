@@ -41,7 +41,7 @@ export function TomaSignals({  offConnection,socket }) {
         </div>
       </div>
       <div className="signalsContainer">
-        <Charts socket = {socket} />
+        <Charts socket = {socket}  />
       </div>
     </Container>
   );

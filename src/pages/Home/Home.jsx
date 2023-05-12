@@ -13,23 +13,22 @@ import { useEditUserMutation } from "../../store/services/userApi";
 import { createContext, useState } from "react";
 import { io } from "socket.io-client";
 import { useEffect } from "react";
-
+import { ContextProvider } from "../../context/contextProvider";
 export const appContext = createContext();
 
 export function Home() {
   const [socket, setSocket] = useState(null);
-  useEffect(() => {
-    setSocket(io("http://192.168.10.14:3100"));
-  }, []);
+    useEffect(() => {
+      setSocket(io("http://192.168.10.14:3100"));
+    }, []);
   const dispatch = useDispatch();
 
-  const [editUserDB, { error, isLoading, isSuccess }] = useEditUserMutation();
+  const [editUserDB, { error, isLoading, }] = useEditUserMutation();
   const actualUser = useSelector((state) => state.user);
   const signals = useSelector((state) => state.signals.slice());
 
   const { data: user, isLoadingDB } = useGetUserData();
-  const [pressed, setPressed] = useState(true);
-  const [clear, setClear] = useState(false);
+  const [state, setState] = useState(false);
 
   if (isLoadingDB || isLoading || !user || !actualUser)
     return (
@@ -55,19 +54,19 @@ export function Home() {
 
 
   //funcion start finish
-  let state;
+  let btnstate;
   const offConnection = async () => {
-    setClear(true);
+    setState(true);
     const estado = false;
-    state = 0;
-    socket.emit("btninit", state);
+    btnstate = 0;
+    socket.emit("btninit", btnstate);
     dispatch(editUser({ ...actualUser, isactive: estado }));
     await dispatch(setInitSignals(estado));
     await editUserDB({ ...actualUser, isactive: estado });
   };
 
   const onWait = async () => {
-    setClear(false);
+    setState(false);
     const estado = true;
     dispatch(editUser({ ...actualUser, isactive: estado }));
     await dispatch(setInitSignals(estado));
@@ -76,38 +75,42 @@ export function Home() {
   };
 
   const onStart = async () => {
-    setClear(false);
-    state = 1;
-    socket.emit("btninit", state);
+    setState(false);
+    btnstate = 1;
+    socket.emit("btninit", btnstate);
   };
 
   const onRestart = async () => {
-    setClear(true);
-    state = 0;
-    socket.emit("btninit", state);
+    btnstate = 0;
+    socket.emit("btninit", btnstate);
+    setState(true);
   };
 
   return (
     <Container>
-      <appContext.Provider value={clear}>
-      
+      <ContextProvider state = {state} setState={setState} socket={socket}>
+        
+          <div>
+            {!actualUser.isactive && (
+              <div className="contenedor-bg">
+                <Slides onWait={onWait} />
+              </div>
+            )}
+          </div>
 
-        <div>
-          {!actualUser.isactive && (
-            <div className="contenedor-bg">
-              <Slides onWait={onWait} />
-            </div>
-          )}
-        </div>
-
-        <div>
-          {actualUser.isactive && (
-            <div className="contenedor">
-              <TomaSignals offConnection={offConnection} onRestart={onRestart} onStart={onStart} socket={socket} />
-            </div>
-          )}
-        </div>
-      </appContext.Provider>
+          <div>
+            {actualUser.isactive && (
+              <div className="contenedor">
+                <TomaSignals
+                  offConnection={offConnection}
+                  onRestart={onRestart}
+                  onStart={onStart}
+                  // socket={socket}
+                />
+              </div>
+            )}
+          </div>
+      </ContextProvider>
     </Container>
   );
 }

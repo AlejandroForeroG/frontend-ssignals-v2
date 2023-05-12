@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { Grapher } from "./Grapher";
 import SignalController from "../../controllers/SignalController";
 
-export function Charts({ socket }) {
+export function Charts() {
   const signals = useSelector((state) => state.signals);
 
   return (
@@ -16,7 +16,7 @@ export function Charts({ socket }) {
               <p>Tm:[ {signal.samplingTime} S]</p>
             </div>
             <div className="canvasContainer">
-              <Grapher signal={signal} socket={socket} />
+              <Grapher signal={signal}  />
             </div>
           </div>
         ))}

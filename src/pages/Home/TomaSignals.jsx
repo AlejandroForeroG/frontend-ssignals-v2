@@ -11,10 +11,7 @@ import { useContext } from "react";
 import { appContext } from "./Home";
 import { useState } from "react";
 export function TomaSignals({ offConnection,socket,onRestart,onStart }) {
-  const clear = useContext(appContext);
   const actualUser = useSelector((state) => state.user);
-  const signals = useSelector((state) => state.signals.slice(0, 5));
-  const dispatch = useDispatch();
   const [pressed, setPressed] = useState(true);
  
 
@@ -69,7 +66,7 @@ export function TomaSignals({ offConnection,socket,onRestart,onStart }) {
         </div>
       </div>
       <div className="signalsContainer">
-        <Charts socket={socket} />
+        <Charts />
       </div>
     </Container>
   );

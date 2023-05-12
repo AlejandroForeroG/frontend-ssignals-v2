@@ -1,5 +1,6 @@
 import valuesAdm from "./valuesAdm";
-
+import Evaluator from "./evaluator.js";
+const evaluator = new Evaluator();
 class SignalController {
   constructor(chart, signal) {
     this.chart = chart;
@@ -22,15 +23,13 @@ class SignalController {
         this.InitSample,
         this.nextValue = data,
       );
+      evaluator.evaluate(this)
       this.InitSample++;
     // }, this.timeSample *1000);
     
   }
 
-  setValue(data) {
-    this.nextValue = data;
-  }
-
+  
   clear() {
     // clearInterval(this.ejecutorId);
     this.chart.data.labels = [...this.initLabels];
@@ -39,9 +38,25 @@ class SignalController {
     this.valuesAdm.clearData();
     this.chart.update();
   }
-
+  
   destroy() {
     this.chart.destroy();
+  }
+  setValue(data) {
+    this.nextValue = data;
+  }
+
+  getName(){
+    return this.name;
+  }
+  getData(){
+    return this.chart.data.datasets[0].data;
+  }
+  getValue(){
+    return this.nextValue;
+  }
+  setBackground(color){
+    this.chart.data.datasets[0].backgroundColor = color;
   }
 }
 

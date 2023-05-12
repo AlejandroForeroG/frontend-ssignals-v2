@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
+
 import { useRef, useEffect } from "react";
 import Signals from "../../store/slices/Signals";
 import SignalController from "../../controllers/SignalController";
 import { Line } from "react-chartjs-2";
 import { config } from "../../controllers/configSignal";
 import { useState } from "react";
-import { appContext } from "../../pages/Home/Home";
+
 import {
   useGlobalState,
   useSetGlobalState,
@@ -51,7 +51,6 @@ export function Grapher({ signal }) {
   useEffect(() => {
     const chart = chartRef.current;
     const signalObj = new SignalController(chart, signal);
-    const evento = `${signal.dataName}`;
 
     if (socket) {
       socket.on("rasberry:data", (data) => {
@@ -67,6 +66,11 @@ export function Grapher({ signal }) {
       }
     };
   }, []);
+
+
+
+
+
 
   useEffect(() => {
     if (state && signalsObject) {

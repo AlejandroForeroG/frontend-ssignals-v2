@@ -14,16 +14,17 @@ class SignalController {
     this.valuesAdm = new valuesAdm(); //evaluador de seañales
   }
 
-  ejecutor() {
-    this.ejecutorId = setInterval(() => {
+  ejecutor(data) {
+    // this.ejecutorId = setInterval(() => {
       this.valuesAdm.dataRun(
         this.chart,
         this.numberSamples,
         this.InitSample,
-        this.nextValue,
+        this.nextValue = data,
       );
       this.InitSample++;
-    }, this.timeSample *1000);
+    // }, this.timeSample *1000);
+    
   }
 
   setValue(data) {
@@ -31,7 +32,7 @@ class SignalController {
   }
 
   clear() {
-    clearInterval(this.ejecutorId);
+    // clearInterval(this.ejecutorId);
     this.chart.data.labels = [...this.initLabels];
     this.chart.data.datasets[0].data = [];
     this.InitSample = 1;

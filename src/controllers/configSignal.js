@@ -1,9 +1,39 @@
 let options = {};
-export function config(signal){
+export function config(signal) {
+  const labels = signal.labels;
+  if (signal.isShort) {
+    options = {
+      responsive: true,
 
-const labels = signal.labels;
-    if (signal.isShort) {
-      options = {
+      type: "line",
+      plugins: {
+        legend: {
+          position: "top",
+        },
+        title: {
+          display: false,
+        },
+      },
+      scales: {
+        x: {
+          max: null,
+        },
+      },
+    };
+  } else {
+    options = {
+      responsive: true,
+      animation: false,
+      scales: {
+        x: {
+          max: null,
+        },
+      },
+      elements: {
+        point: {
+          radius: 0,
+        },
+
         responsive: true,
         type: "line",
         plugins: {
@@ -14,43 +44,24 @@ const labels = signal.labels;
             display: false,
           },
         },
-      };
-    } else {
-      options = {
-        animation: false,
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-        elements: {
-          point: {
-            radius: 0,
-          },
-    
-          responsive: true,
-          type: "line",
-          plugins: {
-            legend: {
-              position: "top",
-            },
-            title: {
-              display: false,
-            },
-          },
-        },
-      };
-    }
-
-    const data = {
-      labels,
-      datasets: [
-        {
-          data: [],
-          fill: true,
-          backgroundColor: "rgba(51, 214, 146, 0.7)",
-        },
-      ],
+      },
     };
-    return {options, data};
+  }
+
+  const data = {
+    labels,
+    datasets: [
+      {
+        data: [],
+        fill: true,
+        backgroundColor: "rgba(51, 214, 146, 0.7)",
+        scales: {
+          x: {
+            max: null,
+          },
+        },
+      },
+    ],
+  };
+  return { options, data };
 }

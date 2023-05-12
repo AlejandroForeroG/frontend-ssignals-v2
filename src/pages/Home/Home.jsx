@@ -15,6 +15,7 @@ import { io } from "socket.io-client";
 import { useEffect } from "react";
 
 export const appContext = createContext();
+export const appContext2 = createContext();
 
 export function Home() {
   const [socket, setSocket] = useState(null);
@@ -29,7 +30,7 @@ export function Home() {
 
   const { data: user, isLoadingDB } = useGetUserData();
   const [pressed, setPressed] = useState(true);
-  const [clear, setClear] = useState(false);
+  const [state, setState] = useState(0);
 
   if (isLoadingDB || isLoading || !user || !actualUser)
     return (
@@ -52,14 +53,11 @@ export function Home() {
 
   if (error) return <p>Oh no, hubo un error recarga la pagina ☹</p>;
 
-
-
   //funcion start finish
-  let state;
+  let btnstate;
   const offConnection = async () => {
-    setClear(true);
     const estado = false;
-    state = 0;
+    btnstate = 0;
     socket.emit("btninit", state);
     dispatch(editUser({ ...actualUser, isactive: estado }));
     await dispatch(setInitSignals(estado));
@@ -67,7 +65,6 @@ export function Home() {
   };
 
   const onWait = async () => {
-    setClear(false);
     const estado = true;
     dispatch(editUser({ ...actualUser, isactive: estado }));
     await dispatch(setInitSignals(estado));
@@ -76,44 +73,48 @@ export function Home() {
   };
 
   const onStart = async () => {
-    setClear(false);
-    state = 1;
+    btnstate = 1;
     socket.emit("btninit", state);
+    setState(1);
   };
 
   const onRestart = async () => {
-    setClear(true);
-    state = 0;
+    btnstate = 0;
     socket.emit("btninit", state);
+    setState(2);
   };
 
   return (
     <Container>
-      <appContext.Provider value={clear}>
-      
+      <appContext.Provider value={state}>
+        <appContext2.Provider value={setState}>
+          <div>
+            {!actualUser.isactive && (
+              <div className="contenedor-bg">
+                <Slides onWait={onWait} />
+              </div>
+            )}
+          </div>
 
-        <div>
-          {!actualUser.isactive && (
-            <div className="contenedor-bg">
-              <Slides onWait={onWait} />
-            </div>
-          )}
-        </div>
-
-        <div>
-          {actualUser.isactive && (
-            <div className="contenedor">
-              <TomaSignals offConnection={offConnection} onRestart={onRestart} onStart={onStart} socket={socket} />
-            </div>
-          )}
-        </div>
+          <div>
+            {actualUser.isactive && (
+              <div className="contenedor">
+                <TomaSignals
+                  offConnection={offConnection}
+                  onRestart={onRestart}
+                  onStart={onStart}
+                  socket={socket}
+                />
+              </div>
+            )}
+          </div>
+        </appContext2.Provider>
       </appContext.Provider>
     </Container>
   );
 }
 
 const Container = styled.div`
- 
   height: 100%;
   .contenedor-bg {
     width: 95vw;

@@ -5,7 +5,7 @@ class valuesAdm {
     this.cont = 0;
   }
 
-  dataRun(chart,nSamples, sample, variable) {
+  dataRun(chart, nSamples, sample, variable) {
     // Se evaluan los  los primeros 10 símbolos
     // y evitar la acumulación de etiquetas y datos en el gráfico
     if (this.prober !== 1) {
@@ -42,8 +42,8 @@ class valuesAdm {
 
   // Método para agregar datos al gráfico antes de los primeros 10 datos
   addData(chart, sample, variable) {
-    // chart.data.labels.push(toString(sample));
-    const newLabels = [...chart.data.labels,sample];
+    // chart.data.labels.push(sample);
+    const newLabels = [...chart.data.labels, sample];
     chart.data.labels = newLabels;
     chart.data.datasets.forEach((dataset) => {
       dataset.data.push(variable);

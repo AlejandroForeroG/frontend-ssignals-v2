@@ -35,7 +35,7 @@ ChartJS.register(
 
 export function Grapher({ signal, socket }) {
   const id = signal.id;
-  const clear = useContext(appContext);
+  const {state,setState}= useContext(appContext);
   
   const chartRef = useRef(null);
   
@@ -49,14 +49,16 @@ export function Grapher({ signal, socket }) {
     const evento = `${signal.dataName}`;
 
     if (socket) {
-      socket.on(evento, (data) => {
-        signalObj.ejecutor(data);
+      socket.on("rasberry:data", (data) => {
+        // const datos = data
+        signalObj.setValue = data;
+       
       });
     }
     setSignalsObject(signalObj);
     return () => {
       if (socket) {
-        socket.off(evento);
+        socket.off("rasberry:data ");
         signalObj.destroy();
       }
     }
@@ -66,11 +68,14 @@ export function Grapher({ signal, socket }) {
 
 
   useEffect(() => {
-    if (clear&&signalsObject) {
+    if(state==1&&signalsObject){
+      signalsObject.ejecutor();
+    }else if (state==2&&signalsObject) {
       console.log("clearing");
-      signalsObject.clear();   
+      signalsObject.clear(); 
+      setState(0);  
     }
-  }, [clear,signalsObject]);
+  }, [state,signalsObject]);
 
   return (
     <>

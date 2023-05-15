@@ -5,8 +5,8 @@ class SignalController {
   constructor(chart, signal) {
     this.chart = chart;
     this.name = signal.dataName;
-    this.nextValue;
-    this.timeSample = signal.samplingTime;
+    this.nextValue = 0;
+    this.timeSample = parseFloat(signal.samplingTime);
     this.initLabels = signal.labels;
     this.numberSamples = this.chart.data.labels.length;
     this.InitSample = 1;
@@ -15,47 +15,45 @@ class SignalController {
     this.valuesAdm = new valuesAdm(); //evaluador de seañales
   }
 
-  ejecutor(data) {
-    // this.ejecutorId = setInterval(() => {
+  start() {
+    this.ejecutorId = setInterval(() => {
       this.valuesAdm.dataRun(
         this.chart,
         this.numberSamples,
         this.InitSample,
-        this.nextValue = data,
+        this.nextValue
       );
-      evaluator.evaluate(this)
+      evaluator.evaluate(this);
       this.InitSample++;
-    // }, this.timeSample *1000);
-    
+    }, this.timeSample * 1000);
   }
 
-  
-  clear() {
-    // clearInterval(this.ejecutorId);
+  stop() {
     this.chart.data.labels = [...this.initLabels];
     this.chart.data.datasets[0].data = [];
     this.InitSample = 1;
     this.valuesAdm.clearData();
     this.chart.update();
+    clearInterval(this.ejecutorId);
   }
-  
+
   destroy() {
     this.chart.destroy();
   }
-  setValue(data) {
+  setNextValue(data) {
     this.nextValue = data;
   }
 
-  getName(){
-    return this.name;
-  }
-  getData(){
-    return this.chart.data.datasets[0].data;
-  }
-  getValue(){
+  getNextValue() {
     return this.nextValue;
   }
-  setBackground(color){
+  getName() {
+    return this.name;
+  }
+  getData() {
+    return this.chart.data.datasets[0].data;
+  }
+  setBackground(color) {
     this.chart.data.datasets[0].backgroundColor = color;
   }
 }

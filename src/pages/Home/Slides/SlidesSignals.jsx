@@ -10,7 +10,7 @@ import { v } from "../../../styles/Variables";
 
 //funcion principal
 export function SlidesSignals({ handleSlideBack, handleSlide }) {
-  const signals = useSelector((state) => state.signals.slice(0, 5));
+  const signals = useSelector((state) => state.signals.slice(0, 3));
   const dispatch = useDispatch();
   const initialValues = [];
   for (let i = 1; i <= 5; i++) {
@@ -76,8 +76,8 @@ export function SlidesSignals({ handleSlideBack, handleSlide }) {
         </form>
       </div>
 
-      <p>La señal de ECG tiene un tiempo determinado para que funcione bien</p>
-      <p>Por ende no se puede cambiar</p>
+      <p>Las señales de ECG, GSR y Flujo de aire tiene un tiempo determinado </p>
+      <p>para que funcione bien, por ende no se puede cambiar</p>
       <div className="buttons">
         <ButtonP
           text="Atras"

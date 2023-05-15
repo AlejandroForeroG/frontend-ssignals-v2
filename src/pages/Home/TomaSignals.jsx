@@ -77,7 +77,6 @@ const Container = styled.div`
   padding: 30px;
   display: flex;
   flex-direction: column;
-
   justify-content: center;
   background: #ecf0ff;
   .header-inicio {

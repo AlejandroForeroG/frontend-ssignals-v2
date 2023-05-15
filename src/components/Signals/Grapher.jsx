@@ -1,4 +1,3 @@
-
 import { useRef, useEffect } from "react";
 import Signals from "../../store/slices/Signals";
 import SignalController from "../../controllers/SignalController";
@@ -11,6 +10,7 @@ import {
   useSetGlobalState,
   useSocket,
 } from "../../context/contextProvider";
+
 import {
   Chart,
   CategoryScale,
@@ -40,42 +40,43 @@ ChartJS.register(
 
 export function Grapher({ signal }) {
   const id = signal.id;
-  // const state = useContext(appContext);
   const state = useGlobalState();
-  const chartRef = useRef(null);
   const socket = useSocket();
-  //FUNCION PARA LOS AJUSTES DE LA GRAFICA
+  const chartRef = useRef(null);
   const { options, data } = config(signal);
   const [signalsObject, setSignalsObject] = useState({});
 
   useEffect(() => {
     const chart = chartRef.current;
     const signalObj = new SignalController(chart, signal);
-
+    console.log(chart);
     if (socket) {
       socket.on("rasberry:data", (data) => {
-        // const datos = data
-        signalObj.ejecutor(parseFloat(data[signal.dataName]));
+        // setNextValue(parseFloat(data[signal.dataName]));
+        signalObj.setNextValue(parseFloat(data[signal.dataName]));
+        // signalObj.ejecutor(parseFloat(data[signal.dataName]));
       });
     }
     setSignalsObject(signalObj);
     return () => {
       if (socket) {
         socket.off("rasberry:data");
-        signalObj.destroy();
       }
+      signalObj.destroy();
     };
   }, []);
 
-
-
-
-
-
   useEffect(() => {
-    if (state && signalsObject) {
-      console.log("clearing");
-      signalsObject.clear();
+    if (state == 0 && signalsObject) {
+      console.log("parando");
+      signalsObject.stop();
+    }
+    if (state == 1 && signalsObject) {
+      console.log("Iniciando");
+      signalsObject.start();
+    }
+    if (state == 2 && signalsObject) {
+      console.log("reiniciando");
     }
   }, [state, signalsObject]);
 

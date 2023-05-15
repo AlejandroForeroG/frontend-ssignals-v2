@@ -13,10 +13,11 @@ export function Charts() {
           <div className="margin" key={index}>
             <div className="container-text">
               <p>{signal.name}</p>
-              <p>Tm:[ {signal.samplingTime} S]</p>
+              {/* <p>Tm: {signal.samplingTime} S</p> */}
+              <div></div>
             </div>
             <div className="canvasContainer">
-              <Grapher signal={signal}  />
+              <Grapher signal={signal} />
             </div>
           </div>
         ))}
@@ -43,24 +44,27 @@ const Container = styled.div`
       padding: 10px 0;
       border-radius: 1rem;
       box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+      
       .container-text {
         display: flex;
-        justify-content: flex-start;
+        justify-content: center;
         align-items: center;
-        width: 80%;
+        width: 100%;
         margin-top: 10px;
-        margin-left: 20px;
+        /* margin-left: 20px; */
+        text-align: center;
 
         p {
-          margin-left: 20px;
+          font-size: 1.2rem;
+          /* margin-left: 20px; */
           font-weight: 500;
-          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+          /* box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px; */
           border-radius: 1rem;
-          padding: 5px 10px;
+          padding: 0px 0px;
         }
       }
       .canvasContainer {
-        margin: 10px;
+        margin: 0px 12px 12px 12px;
         width: 500px;
         height: 315px;
       }

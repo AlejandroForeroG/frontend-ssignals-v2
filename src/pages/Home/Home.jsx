@@ -28,7 +28,7 @@ export function Home() {
   const signals = useSelector((state) => state.signals.slice());
 
   const { data: user, isLoadingDB } = useGetUserData();
-  const [state, setState] = useState(false);
+  const [state, setState] = useState(null);
 
   if (isLoadingDB || isLoading || !user || !actualUser)
     return (
@@ -56,7 +56,7 @@ export function Home() {
   //funcion start finish
   let btnstate;
   const offConnection = async () => {
-    setState(true);
+    setState(2);
     const estado = false;
     btnstate = 0;
     socket.emit("btninit", btnstate);
@@ -66,7 +66,6 @@ export function Home() {
   };
 
   const onWait = async () => {
-    setState(false);
     const estado = true;
     dispatch(editUser({ ...actualUser, isactive: estado }));
     await dispatch(setInitSignals(estado));
@@ -75,7 +74,7 @@ export function Home() {
   };
 
   const onStart = async () => {
-    setState(false);
+    setState(1);
     btnstate = 1;
     socket.emit("btninit", btnstate);
   };
@@ -83,7 +82,7 @@ export function Home() {
   const onRestart = async () => {
     btnstate = 0;
     socket.emit("btninit", btnstate);
-    setState(true);
+    setState(0);
   };
 
   return (

@@ -52,9 +52,7 @@ export function Grapher({ signal }) {
     console.log(chart);
     if (socket) {
       socket.on("rasberry:data", (data) => {
-        // setNextValue(parseFloat(data[signal.dataName]));
         signalObj.setNextValue(parseFloat(data[signal.dataName]));
-        // signalObj.ejecutor(parseFloat(data[signal.dataName]));
       });
     }
     setSignalsObject(signalObj);

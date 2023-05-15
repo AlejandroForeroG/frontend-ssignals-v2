@@ -4,7 +4,7 @@ import { ButtonP } from "../../../components/elements/ButtonP";
 
 export function SlidesFinal({ handleSlideBack, onWait }) {
   const actualUser = useSelector((state) => state.user);
-  const signals = useSelector((state) => state.signals.slice(0, 5));
+  const signals = useSelector((state) => state.signals.slice(0, 3));
 
   return (
     <Container>

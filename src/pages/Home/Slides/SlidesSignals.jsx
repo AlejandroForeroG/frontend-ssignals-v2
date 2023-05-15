@@ -13,7 +13,7 @@ export function SlidesSignals({ handleSlideBack, handleSlide }) {
   const signals = useSelector((state) => state.signals.slice(0, 3));
   const dispatch = useDispatch();
   const initialValues = [];
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 3; i++) {
     initialValues.push({
       id: i,
       samplingTime: "1",

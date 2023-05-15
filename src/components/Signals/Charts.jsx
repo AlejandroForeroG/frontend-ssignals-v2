@@ -5,7 +5,7 @@ import LineGraph from "./chart2";
 import SignalController from "../../controllers/SignalController";
 
 export function Charts() {
-  const signalks = useSelector((state) => state.signals);
+  const signals = useSelector((state) => state.signals);
 
   return (
     <Container>

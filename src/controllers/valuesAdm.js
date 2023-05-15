@@ -42,9 +42,9 @@ class valuesAdm {
 
   // Método para agregar datos al gráfico antes de los primeros 10 datos
   addData(chart, sample, variable) {
-    // chart.data.labels.push(sample);
-    const newLabels = [...chart.data.labels, sample];
-    chart.data.labels = newLabels;
+    chart.data.labels.push(sample);
+    // const newLabels = [...chart.data.labels, sample];
+    // chart.data.labels = newLabels;
     chart.data.datasets.forEach((dataset) => {
       dataset.data.push(variable);
     });
@@ -58,18 +58,7 @@ class valuesAdm {
     });
   }
 
-  // Método para manejar el almacenamiento de datos en sessionStorage
-  // almacenamiento(chart) {
-  //   const valor = sessionStorage.getItem("prober");
-  //   const nombre = chart.data.datasets[0].label;
-  //   const datos = chart.data.datasets[0].data.slice(0, 14);
-  //   const bool = valor !== 1 ? datos.length <= 14 : datos.length === 14;
-  //   if (!bool) {
-  //     return;
-  //   }
-  //   sessionStorage.setItem(nombre, datos);
-  // }
-
+  
   clearData() {
     this.counter = [];
     this.prober = 0;

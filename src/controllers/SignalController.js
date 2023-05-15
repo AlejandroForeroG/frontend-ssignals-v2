@@ -54,6 +54,7 @@ class SignalController {
     return this.chart.data.datasets[0].data;
   }
   setBackground(color) {
+    this.chart.data.datasets[0].borderColor = color;
     this.chart.data.datasets[0].backgroundColor = color;
   }
 }

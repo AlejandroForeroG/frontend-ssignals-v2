@@ -2,7 +2,7 @@
 
 
 class Evaluator {
-  // Método para evaluar una señal y asignar su fondo de acuerdo a los límites establecidos
+ 
   evaluate(signal) {
     if (signal.getData().length < 0) {
       var promedio = signal.getNextValue();

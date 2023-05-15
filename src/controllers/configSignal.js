@@ -78,5 +78,13 @@ export function config(signal) {
       },
     ],
   };
+
+ const configuration = {
+   type: "line",
+   data: data,
+   options:options,
+ };
+//  return configuration;
+//activar si no sirve
   return { options, data };
 }

@@ -1,10 +1,11 @@
 import styled from "styled-components";
 import { useSelector } from "react-redux";
 import { Grapher } from "./Grapher";
+import LineGraph from "./chart2";
 import SignalController from "../../controllers/SignalController";
 
 export function Charts() {
-  const signals = useSelector((state) => state.signals);
+  const signalks = useSelector((state) => state.signals);
 
   return (
     <Container>
@@ -17,7 +18,8 @@ export function Charts() {
               <div></div>
             </div>
             <div className="canvasContainer">
-              <Grapher signal={signal} />
+              {/* <Grapher signal={signal} /> */}
+              <LineGraph signal={signal} />
             </div>
           </div>
         ))}

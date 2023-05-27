@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const arrayTen = Array.from(Array(10), (_, i) => (i + 1).toString());
 const arrayHundred = Array.from(Array(100), (_, i) => (i + 1).toString());
-const arrayThousands = Array.from(Array(1000), (_, i) => (i + 1).toString());
+const arrayThousands = Array.from(Array(800), (_, i) => (i + 1).toString());
 
 //estado inicial de las señales
 const initialState = [
@@ -17,7 +17,7 @@ const initialState = [
     values: [],
     samplingTime: "1",
     color: "rgba(51, 214, 146, 1)",
-    isShort: "short",
+    type: "short",
   },
   {
     id: 2,
@@ -28,7 +28,7 @@ const initialState = [
     values: [],
     samplingTime: "1",
     color: "rgba(51, 214, 146, 1)",
-    isShort: true,
+    type: "short",
   },
   {
     id: 3,
@@ -39,7 +39,7 @@ const initialState = [
     values: [],
     samplingTime: "1",
     color: "rgba(51, 214, 146, 1)",
-    isShort: true,
+    type: "short",
   },
   {
     id: 4,
@@ -50,7 +50,7 @@ const initialState = [
     values: [],
     samplingTime: "0.1",
     color: "rgba(51, 214, 146, 1)",
-    isShort: false,
+    type: "medium",
   },
   {
     id: 5,
@@ -59,20 +59,20 @@ const initialState = [
     unit: "m3/h",
     labels: arrayHundred,
     values: [],
-    samplingTime: "0.01",
+    samplingTime: "0.1",
     color: "rgba(51, 214, 146, 1)",
-    isShort: false,
+    type: "long",
   },
   {
     id: 6,
     name: "ECG",
     dataName: "ECG",
     unit: "mV",
-    labels: arrayHundred,
+    labels: arrayThousands,
     values: [],
-    samplingTime: "0.001",
+    samplingTime: "0.01",
     color: "rgba(51, 214, 146, 1)",
-    isShort: false,
+    type: "long",
   },
 ];
 
@@ -81,8 +81,7 @@ export const signalsSlice = createSlice({
   initialState,
   reducers: {
     setInitSignals: (state, action) => {
-      state = initialState;
-      
+      state = initialState;   
     },
     setTime: (state, action) => {
       action.payload.forEach((signal) => {

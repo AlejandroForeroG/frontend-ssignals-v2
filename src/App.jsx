@@ -5,11 +5,12 @@ import { useState } from "react";
 import styled from "styled-components";
 import { io } from "socket.io-client";
 import { useEffect } from "react";
+import dotenv from "dotenv";
 
 
 function App() {
  
-
+  // dotenv.config();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   return (
     <>

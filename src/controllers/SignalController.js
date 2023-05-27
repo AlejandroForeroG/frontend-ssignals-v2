@@ -5,6 +5,7 @@ class SignalController {
   constructor(chart, signal) {
     this.chart = chart;
     this.name = signal.dataName;
+    this.type = signal.type;
     this.nextValue = 0;
     this.timeSample = parseFloat(signal.samplingTime);
     this.initLabels = signal.labels;
@@ -46,6 +47,11 @@ class SignalController {
 
   getNextValue() {
     return this.nextValue;
+  }
+  getPreviousValue(steps = 1) {
+    const currentData = this.getData();
+    const currentIndex = currentData.length - 1;
+    return currentData[currentIndex - steps];
   }
   getName() {
     return this.name;

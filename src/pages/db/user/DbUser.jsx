@@ -12,6 +12,7 @@ export function DataBase() {
   const [actualUser, setActualUser] = useState({}); // [user, setUser
   const [state, setState] = useState("base");
   const { data: users, error, isLoading } = useGetUsersQuery();
+  
 
   useEffect(() => {
     console.log(users);
@@ -99,7 +100,6 @@ export function DataBase() {
 }
 
 const Container = styled.div`
-  width: 95vw;
   height: 100vh;
   background: #ecf0ff;
   display: flex;

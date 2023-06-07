@@ -34,8 +34,8 @@ export function CrearUser({ setState, passData }) {
         <h1>Crear usuario</h1>
         <div className="form-crear">
           <form>
-            <div className="izquierda">
-              <label htmlFor="name">Nombre</label>
+            <div className="input-container">
+              <span className="label-span">Nombre</span>
               <input
                 type="text"
                 name="name"
@@ -44,8 +44,10 @@ export function CrearUser({ setState, passData }) {
                   setFormData({ ...formData, name: e.target.value })
                 }
               />
+            </div>
 
-              <label htmlFor="pp">link imagen</label>
+            <div className="input-container">
+              <span className="label-span">link imagen</span>
               <input
                 type="pp"
                 name="pp"
@@ -55,51 +57,56 @@ export function CrearUser({ setState, passData }) {
                 }
               />
             </div>
+
             <div className="derecha">
-              <label htmlFor="height">Altura</label>
-              <input
-                type="number"
-                name="height"
-                id="height"
-                required
-                onChange={(e) =>
-                  setFormData({ ...formData, height: e.target.value })
-                }
-              />
-
-              <label htmlFor="weight">Peso</label>
-              <input
-                type="number"
-                name="weight"
-                id="weight"
-                required
-                onChange={(e) =>
-                  setFormData({ ...formData, weight: e.target.value })
-                }
-              />
-
-              <label htmlFor="edad">Edad</label>
-              <select
-                name="edad"
-                id="edad"
-                onChange={(e) =>
-                  setFormData({ ...formData, edad: e.target.value })
-                }
-              >
-                {edades.map((edad) => (
-                  <option value={edad} key={edad}>
-                    {edad}
-                  </option>
-                ))}
-              </select>
-              <div className="botones-contenedor">
-                <button className="rojo" onClick={handleCancel}>
-                  <AiOutlineCloseCircle />
-                </button>
-                <button className="verde" onClick={handleSubmit}>
-                  <BsCheckCircle />
-                </button>
+              <div className="input-container">
+                <span className="label-span">Altura</span>
+                <input
+                  type="number"
+                  name="height"
+                  id="height"
+                  required
+                  onChange={(e) =>
+                    setFormData({ ...formData, height: e.target.value })
+                  }
+                />
               </div>
+              <div className="input-container">
+                <span className="label-span">Peso</span>
+                <input
+                  type="number"
+                  name="weight"
+                  id="weight"
+                  required
+                  onChange={(e) =>
+                    setFormData({ ...formData, weight: e.target.value })
+                  }
+                />
+              </div>
+              <div className="input-container">
+                <span className="label-span">Edad</span>
+                <select
+                  name="edad"
+                  id="edad"
+                  onChange={(e) =>
+                    setFormData({ ...formData, edad: e.target.value })
+                  }
+                >
+                  {edades.map((edad) => (
+                    <option value={edad} key={edad}>
+                      {edad}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            <div className="botones-contenedor">
+              <button className="rojo" onClick={handleCancel}>
+                Cancelar
+              </button>
+              <button className="verde" onClick={handleSubmit}>
+                Crear
+              </button>
             </div>
           </form>
         </div>
@@ -146,32 +153,47 @@ const Container = styled.div`
       justify-content: center;
       align-items: center;
       width: 100%;
-      input {
-        width: 100%;
-        padding: 0.5rem;
-        font-size: 1rem;
-        border: 2px solid #dbe3e6;
-        border-radius: 5px;
-        :focus-within {
-          border-color: #3876e2;
-        }
-        text-shadow: none;
-        color: inherit;
-        appearance: none;
-        outline-style: none;
-        background-color: transparent;
-      }
-      .izquierda {
+      flex-direction: column;
+      .input-container {
         display: flex;
         justify-content: space-between;
-        align-items: center;
+        align-items: flex-start;
+        width: 100%;
+        margin-bottom: 1rem;
         flex-direction: column;
+        border: 1px solid #b6b6b6;
+        border-radius: 8px;
+        padding: 0.5rem;
+        margin-top: 0.5rem;
+        .label-span {
+          font-size: 13px;
+          width: 100%;
+        }
+        :focus-within {
+          border-color: rgba(51, 214, 146, 1);
+          .label-span {
+            color: rgba(51, 214, 146, 1);
+          }
+        }
+        input {
+          width: 100%;
+          text-shadow: none;
+          color: inherit;
+          appearance: none;
+          outline-style: none;
+          border-width: 0;
+          background-color: transparent;
+        }
       }
+
       .derecha {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        flex-direction: column;
+        flex-direction: row;
+        .input-container {
+          width: 30%;
+        }
       }
       .botones-contenedor {
         margin-top: 1rem;
@@ -180,21 +202,26 @@ const Container = styled.div`
         align-items: center;
         width: 100%;
         button {
-          width: 3rem;
           height: 2.5rem;
-          border-radius: 50%;
+          width: 7rem;
+          border-radius: 25px;
           border: none;
           outline: none;
           cursor: pointer;
           color: #f5f5f5;
+          transition: all 0.3s ease-in-out;
         }
         .rojo {
           background-color: rgba(245, 39, 99, 1);
-          font-size: 1.5rem;
+          :hover {
+            background-color: rgba(245, 39, 99, 0.8);
+          }
         }
         .verde {
           background-color: rgba(51, 214, 146, 1);
-          font-size: 1.5rem;
+          :hover {
+            background-color: rgba(51, 214, 146, 0.8);
+          }
         }
       }
     }

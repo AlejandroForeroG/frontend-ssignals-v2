@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { AiOutlineClose } from "react-icons/ai";
+import { Link } from "react-router-dom";
 import {
   useEditUserMutation,
   useDeleteUserMutation,
@@ -46,8 +47,14 @@ export function EditUser({ actualUser, setState }) {
               >
                 <AiOutlineClose />
               </button>
-              <h1 className="title">Edicion de usuario</h1>
+              <h1 className="title">Manejo de usuario</h1>
             </div>
+            <Link
+              to={`/muestras/${actualUser.id}`}
+              className="button-muestras"
+            >
+              Muestras
+            </Link>
             <button
               className="save-button"
               onClick={(e) => {
@@ -124,7 +131,7 @@ export function EditUser({ actualUser, setState }) {
                   handleDelete(e);
                 }}
               >
-                Borrar Usuario
+                Borrar Usuario (No se puede deshacer).
               </button>
             </div>
           </form>
@@ -157,30 +164,49 @@ const Container = styled.div`
       align-items: center;
       flex-direction: column;
       background-color: #f5f5f5;
-      .button-container {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        flex-direction: row;
+    }
+    .button-container {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
 
-        .cerrar-container {
-          display: flex;
-          justify-content: flex-start;
-          align-items: center;
-          width: 70%;
+      .cerrar-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 70%;
+      }
+      .title {
+        text-align: left;
+      }
+
+      button {
+        font-size: 1rem;
+        cursor: pointer;
+        width: 30%;
+        border-radius: 8px;
+        border: none;
+        background-color: transparent;
+        transition: 0.5s;
+      }
+
+      .button-muestras {
+        text-decoration: none;
+        text-align: center;
+        background-color: #4268e4;
+        width: 30%;
+        cursor: pointer;
+        border-radius: 25px;
+        padding: 0.5rem;
+        color: white;
+        font-size: 1rem;
+        border-color: transparent;
+        margin-right: 1rem;
+        :hover {
+          background-color: #4268e4cc;
         }
-        .title {
-          text-align: left;
-        }
-        button {
-          font-size: 1rem;
-          cursor: pointer;
-          width: 30%;
-          border-radius: 8px;
-          border: none;
-          background-color: transparent;
-          transition: 0.5s;
-        }
+      }
 
         .save-button {
           background-color: #33d692;
@@ -206,8 +232,11 @@ const Container = styled.div`
       }
       .info-edit {
         .img-container {
+          width: 100%;
           display: flex;
           justify-content: flex-start;
+          align-items: flex-start;
+          flex-direction: row;
           img {
             border-radius: 50%;
             width: 8rem;
@@ -261,17 +290,24 @@ const Container = styled.div`
         }
         button {
           margin-top: 1.5rem;
-
-          width: 25%;
+          transition: 0.5s; 
+          width: 90%;
           border-radius: 25px;
 
           padding: 0.5rem;
-          border-color: #d6337c;
+          border-color: transparent;
+          color: white;
           cursor: pointer;
-          color: #d6337c;
-          background-color: transparent;
+          background-color: #d6337c;
+          box-shadow: none;
+          :hover{
+            background-color: #d6337ccc;
+          }
+      
         }
       }
     }
+    
   }
+
 `;

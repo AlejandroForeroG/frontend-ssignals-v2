@@ -1,9 +1,33 @@
 import styled from "styled-components";
 import { BsCheckCircle } from "react-icons/bs";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-export function CrearUser() {
-  const edades = Array.from({ length: 120 }, (_, i) => i + 1); // Genera una matriz de edades del 1 al 120
+import { useState } from "react";
+import { useCreateUserMutation } from "../../../store/services/userApi";
 
+export function CrearUser({ setState, passData }) {
+  const edades = Array.from({ length: 120 }, (_, i) => i + 1); // Genera una matriz de edades del 1 al 120
+  const [createUser, { isLoading, error }] = useCreateUserMutation();
+
+  const [formData, setFormData] = useState({
+    name: "",
+    pp: "",
+    height: "",
+    weight: "",
+    age: "",
+  });
+
+  const handleCancel = (e) => {
+    e.preventDefault();
+    setState("base");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+    await createUser(formData);
+    setState("base");
+    passData(formData);
+  };
   return (
     <Container>
       <div className="contenedor-creacion">
@@ -12,20 +36,56 @@ export function CrearUser() {
           <form>
             <div className="izquierda">
               <label htmlFor="name">Nombre</label>
-              <input type="text" name="name" id="name" />
+              <input
+                type="text"
+                name="name"
+                id="name"
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+              />
 
               <label htmlFor="pp">link imagen</label>
-              <input type="pp" name="pp" id="pp" />
+              <input
+                type="pp"
+                name="pp"
+                id="pp"
+                onChange={(e) =>
+                  setFormData({ ...formData, pp: e.target.value })
+                }
+              />
             </div>
             <div className="derecha">
               <label htmlFor="height">Altura</label>
-              <input type="number" name="height" id="height" required />
+              <input
+                type="number"
+                name="height"
+                id="height"
+                required
+                onChange={(e) =>
+                  setFormData({ ...formData, height: e.target.value })
+                }
+              />
 
               <label htmlFor="weight">Peso</label>
-              <input type="number" name="weight" id="weight" required />
+              <input
+                type="number"
+                name="weight"
+                id="weight"
+                required
+                onChange={(e) =>
+                  setFormData({ ...formData, weight: e.target.value })
+                }
+              />
 
               <label htmlFor="edad">Edad</label>
-              <select name="edad" id="edad">
+              <select
+                name="edad"
+                id="edad"
+                onChange={(e) =>
+                  setFormData({ ...formData, edad: e.target.value })
+                }
+              >
                 {edades.map((edad) => (
                   <option value={edad} key={edad}>
                     {edad}
@@ -33,10 +93,10 @@ export function CrearUser() {
                 ))}
               </select>
               <div className="botones-contenedor">
-                <button className="rojo">
+                <button className="rojo" onClick={handleCancel}>
                   <AiOutlineCloseCircle />
                 </button>
-                <button className="verde">
+                <button className="verde" onClick={handleSubmit}>
                   <BsCheckCircle />
                 </button>
               </div>
@@ -60,7 +120,7 @@ const Container = styled.div`
   align-items: center;
   z-index: 9999;
   .contenedor-creacion {
-    height: 50%;
+    height: 90%;
     width: 50%;
     background-color: #f5f5f5;
     display: flex;
@@ -77,14 +137,29 @@ const Container = styled.div`
         left: 500px;
       }
     }
+
     .form-crear {
+      form {
+        width: 80%;
+      }
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
       input {
+        width: 100%;
         padding: 0.5rem;
         font-size: 1rem;
+        border: 2px solid #dbe3e6;
+        border-radius: 5px;
+        :focus-within {
+          border-color: #3876e2;
+        }
+        text-shadow: none;
+        color: inherit;
+        appearance: none;
+        outline-style: none;
+        background-color: transparent;
       }
       .izquierda {
         display: flex;
@@ -105,9 +180,9 @@ const Container = styled.div`
         align-items: center;
         width: 100%;
         button {
-          width: 45%;
+          width: 3rem;
           height: 2.5rem;
-          border-radius: 15px;
+          border-radius: 50%;
           border: none;
           outline: none;
           cursor: pointer;
@@ -115,9 +190,11 @@ const Container = styled.div`
         }
         .rojo {
           background-color: rgba(245, 39, 99, 1);
+          font-size: 1.5rem;
         }
         .verde {
           background-color: rgba(51, 214, 146, 1);
+          font-size: 1.5rem;
         }
       }
     }

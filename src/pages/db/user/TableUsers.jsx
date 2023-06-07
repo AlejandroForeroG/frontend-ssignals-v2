@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export function TableUser({ data }) {
+export function TableUser({ data, setState, passData }) {
   console.log(data);
   return (
     <Container>
@@ -16,7 +16,14 @@ export function TableUser({ data }) {
             <th>Estado</th>
           </tr>
           {data.map((item) => (
-            <tr key={item.id} className="row">
+            <tr
+              key={item.id}
+              className="row"
+              onClick={(e) => {
+                setState("edit");
+                passData(item);
+              }}
+            >
               <td className="image-d">
                 {" "}
                 <img src={item.pp} alt="" className="profilePicture" />
@@ -62,7 +69,6 @@ const Container = styled.div`
     tr {
       border-bottom: 1px solid #ddd;
       background: #f9faff;
-      
     }
     tr:hover {
       background-color: #ddd;

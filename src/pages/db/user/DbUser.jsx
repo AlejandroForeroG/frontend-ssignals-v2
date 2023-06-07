@@ -1,25 +1,36 @@
 import styled from "styled-components";
+import ReactLoading from "react-loading";
 import { useGetUsersQuery } from "../../../store/services/userApi";
 import { useState, useEffect } from "react";
 import { TableUser } from "./TableUsers";
 import { AiOutlineSearch } from "react-icons/ai";
 import { CrearUser } from "./CrearUser";
+import { EditUser } from "./EditUser";
+
 export function DataBase() {
+  const [query, seyQuery] = useState("");
+  const [actualUser, setActualUser] = useState({}); // [user, setUser
+  const [state, setState] = useState("base");
   const { data: users, error, isLoading } = useGetUsersQuery();
 
-  const [query, seyQuery] = useState("");
-  const [state, setState] = useState(false);
+  useEffect(() => {
+    console.log(users);
+  }, [users]);
 
-  const search = (data) => {
-    return data
+  function search(dato) {
+    return dato
       .filter(
         (item) =>
           item.name.toLowerCase().includes(query.toLowerCase()) ||
           item.id.toString().includes(query)
       )
       .sort((a, b) => a.id - b.id);
+  }
+
+  const passData = (datos) => {
+    setActualUser(datos);
   };
-  
+
   if (isLoading)
     return (
       <div
@@ -30,11 +41,16 @@ export function DataBase() {
           transform: "translate(-50%, -50%)",
         }}
       >
-        <h1>Cargando..</h1>
+        <ReactLoading
+          type={"spin"}
+          color={"#405cf5"}
+          height={200}
+          width={100}
+        />
       </div>
     );
-  if (error) return <p>Oh no, there was an error</p>;
-
+  if (error) return <p>Oh no, there was an error: {error}</p>;
+  console.log(users);
   return (
     <Container>
       <div className="button-container">
@@ -51,18 +67,36 @@ export function DataBase() {
               onChange={(e) => seyQuery(e.target.value)}
             />
           </div>
-          <button className="crear-user" onClick={() =>setState(true)}>Crear usuario</button>
+          <button className="crear-user" onClick={() => setState("create")}>
+            Crear usuario
+          </button>
         </div>
-        <TableUser data={search(users)} />
+        <TableUser
+          data={search(users)}
+          setState={setState}
+          passData={passData}
+        />
       </div>
-      {state && (
-        <CrearUser setState = {setState}/>
-      )}
+      {state == "create" && (
+        <CrearUser setState={setState} passData={passData} />
+      )}{" "}
+      {state === "edit" ? (
+        actualUser.isactive ? (
+          <p>
+            El usuario está activo😯. No es posible editar. Termine el proceso e
+            intentelo denuevo
+          </p>
+        ) : (
+          <EditUser
+            setState={setState}
+            passData={passData}
+            actualUser={actualUser}
+          />
+        )
+      ) : null}
     </Container>
   );
 }
-
-
 
 const Container = styled.div`
   width: 95vw;
@@ -71,7 +105,10 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
+  flex-direction: column;
+  p {
+    color: red;
+  }
   .button-container {
     padding: 1.5rem;
     border-radius: 25px;

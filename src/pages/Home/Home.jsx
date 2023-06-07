@@ -19,7 +19,7 @@ export const appContext = createContext();
 export function Home() {
   const [socket, setSocket] = useState(null);
     useEffect(() => {
-      setSocket(io("http://192.168.10.20:3100"));
+      setSocket(io("http://192.168.10.22:3100"));
     }, []);
   const dispatch = useDispatch();
 
